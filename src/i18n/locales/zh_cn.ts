@@ -248,6 +248,9 @@ export const STRINGS_ZH_CN = {
             removeIcon: '移除图标',
             allTabLabel: '全部'
         },
+        fileIconRuleEditor: {
+            addRuleAria: '添加规则'
+        },
         colorPicker: {
             currentColor: '当前',
             newColor: '新颜色',
@@ -709,7 +712,7 @@ export const STRINGS_ZH_CN = {
                 name: '文件名图标映射',
                 desc: '包含指定文本的文件将获得指定图标。每行一个映射：文本=图标',
                 placeholder: '# 文本=图标\n会议=calendar\n发票=receipt',
-                resetTooltip: '恢复默认值'
+                editTooltip: '编辑映射'
             },
             showCategoryIcons: {
                 name: '按文件类型设置图标',
@@ -719,7 +722,7 @@ export const STRINGS_ZH_CN = {
                 name: '文件类型图标映射',
                 desc: '具有指定扩展名的文件将获得指定图标。每行一个映射：扩展名=图标',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: '恢复默认值'
+                editTooltip: '编辑映射'
             },
             optimizeNoteHeight: {
                 name: '优化笔记高度',

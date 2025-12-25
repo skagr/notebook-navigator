@@ -248,6 +248,9 @@ export const STRINGS_AR = {
             removeIcon: 'إزالة الأيقونة',
             allTabLabel: 'الكل'
         },
+        fileIconRuleEditor: {
+            addRuleAria: 'إضافة قاعدة'
+        },
         colorPicker: {
             currentColor: 'الحالي',
             newColor: 'جديد',
@@ -709,7 +712,7 @@ export const STRINGS_AR = {
                 name: 'خريطة أيقونات اسم الملف',
                 desc: 'الملفات التي تحتوي على النص تحصل على الأيقونة المحددة. تعيين واحد لكل سطر: نص=أيقونة',
                 placeholder: '# نص=أيقونة\nاجتماع=calendar\nفاتورة=receipt',
-                resetTooltip: 'استعادة الإعدادات الافتراضية'
+                editTooltip: 'تعديل التعيينات'
             },
             showCategoryIcons: {
                 name: 'أيقونات حسب نوع الملف',
@@ -719,7 +722,7 @@ export const STRINGS_AR = {
                 name: 'خريطة أيقونات نوع الملف',
                 desc: 'الملفات ذات الامتداد تحصل على الأيقونة المحددة. تعيين واحد لكل سطر: امتداد=أيقونة',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: 'استعادة الإعدادات الافتراضية'
+                editTooltip: 'تعديل التعيينات'
             },
             optimizeNoteHeight: {
                 name: 'تحسين ارتفاع الملاحظة',

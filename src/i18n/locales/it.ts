@@ -248,6 +248,9 @@ export const STRINGS_IT = {
             removeIcon: 'Rimuovi icona',
             allTabLabel: 'Tutte'
         },
+        fileIconRuleEditor: {
+            addRuleAria: 'Aggiungi regola'
+        },
         colorPicker: {
             currentColor: 'Attuale',
             newColor: 'Nuovo',
@@ -709,7 +712,7 @@ export const STRINGS_IT = {
                 name: 'Mappa icone per nome',
                 desc: "I file contenenti il testo ottengono l'icona specificata. Una mappatura per riga: testo=icona",
                 placeholder: '# testo=icona\nriunione=calendar\nfattura=receipt',
-                resetTooltip: 'Ripristina valori predefiniti'
+                editTooltip: 'Modifica mappature'
             },
             showCategoryIcons: {
                 name: 'Icone per tipo file',
@@ -719,7 +722,7 @@ export const STRINGS_IT = {
                 name: 'Mappa icone per tipo',
                 desc: "I file con l'estensione ottengono l'icona specificata. Una mappatura per riga: estensione=icona",
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: 'Ripristina valori predefiniti'
+                editTooltip: 'Modifica mappature'
             },
             optimizeNoteHeight: {
                 name: 'Ottimizza altezza note',

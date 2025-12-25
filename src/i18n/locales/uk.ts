@@ -248,6 +248,9 @@ export const STRINGS_UK = {
             removeIcon: 'Вилучити іконку',
             allTabLabel: 'Всі'
         },
+        fileIconRuleEditor: {
+            addRuleAria: 'Додати правило'
+        },
         colorPicker: {
             currentColor: 'Поточний',
             newColor: 'Новий',
@@ -709,7 +712,7 @@ export const STRINGS_UK = {
                 name: 'Зіставлення назв та іконок',
                 desc: 'Файли, що містять текст, отримують вказану іконку. Одне зіставлення на рядок: текст=іконка',
                 placeholder: '# текст=іконка\nзустріч=calendar\nрахунок=receipt',
-                resetTooltip: 'Відновити значення за замовчуванням'
+                editTooltip: 'Редагувати зіставлення'
             },
             showCategoryIcons: {
                 name: 'Іконки за типом файлу',
@@ -719,7 +722,7 @@ export const STRINGS_UK = {
                 name: 'Зіставлення типів та іконок',
                 desc: 'Файли з розширенням отримують вказану іконку. Одне зіставлення на рядок: розширення=іконка',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: 'Відновити значення за замовчуванням'
+                editTooltip: 'Редагувати зіставлення'
             },
             optimizeNoteHeight: {
                 name: 'Оптимізувати висоту нотаток',

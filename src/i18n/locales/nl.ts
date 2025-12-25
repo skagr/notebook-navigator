@@ -249,6 +249,9 @@ export const STRINGS_NL = {
             removeIcon: 'Pictogram verwijderen',
             allTabLabel: 'Alle'
         },
+        fileIconRuleEditor: {
+            addRuleAria: 'Regel toevoegen'
+        },
         colorPicker: {
             currentColor: 'Huidig',
             newColor: 'Nieuw',
@@ -711,7 +714,7 @@ export const STRINGS_NL = {
                 name: 'Bestandsnaam-pictogram toewijzing',
                 desc: 'Bestanden met de tekst krijgen het opgegeven pictogram. Eén toewijzing per regel: tekst=pictogram',
                 placeholder: '# tekst=pictogram\nvergadering=calendar\nfactuur=receipt',
-                resetTooltip: 'Standaardwaarden herstellen'
+                editTooltip: 'Toewijzingen bewerken'
             },
             showCategoryIcons: {
                 name: 'Pictogrammen op bestandstype',
@@ -721,7 +724,7 @@ export const STRINGS_NL = {
                 name: 'Bestandstype-pictogram toewijzing',
                 desc: 'Bestanden met de extensie krijgen het opgegeven pictogram. Eén toewijzing per regel: extensie=pictogram',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: 'Standaardwaarden herstellen'
+                editTooltip: 'Toewijzingen bewerken'
             },
             optimizeNoteHeight: {
                 name: 'Notitiehoogte optimaliseren',

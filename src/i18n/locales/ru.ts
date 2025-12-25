@@ -248,6 +248,9 @@ export const STRINGS_RU = {
             removeIcon: 'Удалить иконку',
             allTabLabel: 'Все'
         },
+        fileIconRuleEditor: {
+            addRuleAria: 'Добавить правило'
+        },
         colorPicker: {
             currentColor: 'Текущий',
             newColor: 'Новый',
@@ -710,7 +713,7 @@ export const STRINGS_RU = {
                 name: 'Сопоставление имён и иконок',
                 desc: 'Файлы, содержащие текст, получают указанную иконку. Одно сопоставление на строку: текст=иконка',
                 placeholder: '# текст=иконка\nвстреча=calendar\nсчёт=receipt',
-                resetTooltip: 'Восстановить значения по умолчанию'
+                editTooltip: 'Редактировать сопоставления'
             },
             showCategoryIcons: {
                 name: 'Иконки по типу файла',
@@ -720,7 +723,7 @@ export const STRINGS_RU = {
                 name: 'Сопоставление типов и иконок',
                 desc: 'Файлы с расширением получают указанную иконку. Одно сопоставление на строку: расширение=иконка',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: 'Восстановить значения по умолчанию'
+                editTooltip: 'Редактировать сопоставления'
             },
             optimizeNoteHeight: {
                 name: 'Оптимизировать высоту заметок',

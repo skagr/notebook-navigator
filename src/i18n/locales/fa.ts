@@ -248,6 +248,9 @@ export const STRINGS_FA = {
             removeIcon: 'حذف آیکون',
             allTabLabel: 'همه'
         },
+        fileIconRuleEditor: {
+            addRuleAria: 'افزودن قانون'
+        },
         colorPicker: {
             currentColor: 'فعلی',
             newColor: 'جدید',
@@ -709,7 +712,7 @@ export const STRINGS_FA = {
                 name: 'نگاشت آیکون نام فایل',
                 desc: 'فایل‌های حاوی متن آیکون مشخص‌شده را دریافت می‌کنند. یک نگاشت در هر خط: متن=آیکون',
                 placeholder: '# متن=آیکون\nجلسه=calendar\nفاکتور=receipt',
-                resetTooltip: 'بازگرداندن پیش‌فرض‌ها'
+                editTooltip: 'ویرایش نگاشت‌ها'
             },
             showCategoryIcons: {
                 name: 'آیکون بر اساس نوع فایل',
@@ -719,7 +722,7 @@ export const STRINGS_FA = {
                 name: 'نگاشت آیکون نوع فایل',
                 desc: 'فایل‌های با پسوند مشخص آیکون مشخص‌شده را دریافت می‌کنند. یک نگاشت در هر خط: پسوند=آیکون',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: 'بازگرداندن پیش‌فرض‌ها'
+                editTooltip: 'ویرایش نگاشت‌ها'
             },
             optimizeNoteHeight: {
                 name: 'بهینه‌سازی ارتفاع یادداشت',

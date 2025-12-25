@@ -249,6 +249,9 @@ export const STRINGS_PT_BR = {
             removeIcon: 'Remover ícone',
             allTabLabel: 'Todos'
         },
+        fileIconRuleEditor: {
+            addRuleAria: 'Adicionar regra'
+        },
         colorPicker: {
             currentColor: 'Atual',
             newColor: 'Nova',
@@ -710,7 +713,7 @@ export const STRINGS_PT_BR = {
                 name: 'Mapa de ícones por nome',
                 desc: 'Os arquivos contendo o texto recebem o ícone especificado. Um mapeamento por linha: texto=ícone',
                 placeholder: '# texto=ícone\nreunião=calendar\nfatura=receipt',
-                resetTooltip: 'Restaurar valores padrão'
+                editTooltip: 'Editar mapeamentos'
             },
             showCategoryIcons: {
                 name: 'Ícones por tipo de arquivo',
@@ -720,7 +723,7 @@ export const STRINGS_PT_BR = {
                 name: 'Mapa de ícones por tipo',
                 desc: 'Os arquivos com a extensão recebem o ícone especificado. Um mapeamento por linha: extensão=ícone',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: 'Restaurar valores padrão'
+                editTooltip: 'Editar mapeamentos'
             },
             optimizeNoteHeight: {
                 name: 'Otimizar altura da nota',

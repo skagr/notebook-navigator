@@ -3,6 +3,8 @@ import {
     convertIconizeToIconId,
     convertIconIdToIconize,
     normalizeCanonicalIconId,
+    normalizeFileTypeIconMapKey,
+    parseIconMapText,
     serializeIconForFrontmatter,
     deserializeIconFromFrontmatter
 } from '../../src/utils/iconizeFormat';
@@ -127,5 +129,25 @@ describe('frontmatter icon helpers', () => {
 
     it('deserializes legacy lucide identifiers', () => {
         expect(deserializeIconFromFrontmatter('lucide-sun')).toBe('sun');
+    });
+});
+
+describe('parseIconMapText', () => {
+    it('converts Iconize identifiers in mapping values', () => {
+        const parsed = parseIconMapText('pdf=SiGithub', normalizeFileTypeIconMapKey);
+        expect(parsed.invalidLines).toEqual([]);
+        expect(parsed.map.pdf).toBe('simple-icons:github');
+    });
+
+    it('converts plain emoji mapping values into canonical emoji identifiers', () => {
+        const parsed = parseIconMapText('pdf=📁', normalizeFileTypeIconMapKey);
+        expect(parsed.invalidLines).toEqual([]);
+        expect(parsed.map.pdf).toBe('emoji:📁');
+    });
+
+    it('marks unknown Iconize-style identifiers as invalid', () => {
+        const parsed = parseIconMapText('pdf=Si', normalizeFileTypeIconMapKey);
+        expect(parsed.map.pdf).toBeUndefined();
+        expect(parsed.invalidLines).toEqual(['pdf=Si']);
     });
 });

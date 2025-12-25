@@ -250,6 +250,9 @@ export const STRINGS_DE = {
             removeIcon: 'Icon entfernen',
             allTabLabel: 'Alle'
         },
+        fileIconRuleEditor: {
+            addRuleAria: 'Regel hinzufügen'
+        },
         colorPicker: {
             currentColor: 'Aktuell',
             newColor: 'Neu',
@@ -713,7 +716,7 @@ export const STRINGS_DE = {
                 name: 'Dateiname-Symbol-Zuordnung',
                 desc: 'Dateien mit dem Text erhalten das angegebene Symbol. Eine Zuordnung pro Zeile: Text=Symbol',
                 placeholder: '# Text=icon\nbesprechung=calendar\nrechnung=receipt',
-                resetTooltip: 'Standardwerte wiederherstellen'
+                editTooltip: 'Zuordnungen bearbeiten'
             },
             showCategoryIcons: {
                 name: 'Symbole nach Dateityp',
@@ -723,7 +726,7 @@ export const STRINGS_DE = {
                 name: 'Dateityp-Symbol-Zuordnung',
                 desc: 'Dateien mit der Erweiterung erhalten das angegebene Symbol. Eine Zuordnung pro Zeile: Erweiterung=Symbol',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: 'Standardwerte wiederherstellen'
+                editTooltip: 'Zuordnungen bearbeiten'
             },
             optimizeNoteHeight: {
                 name: 'Notizenhöhe optimieren',

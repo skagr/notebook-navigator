@@ -248,6 +248,9 @@ export const STRINGS_FR = {
             removeIcon: "Supprimer l'icône",
             allTabLabel: 'Tous'
         },
+        fileIconRuleEditor: {
+            addRuleAria: 'Ajouter une règle'
+        },
         colorPicker: {
             currentColor: 'Actuelle',
             newColor: 'Nouvelle',
@@ -711,7 +714,7 @@ export const STRINGS_FR = {
                 name: 'Correspondance nom-icône',
                 desc: "Les fichiers contenant le texte obtiennent l'icône spécifiée. Une correspondance par ligne : texte=icône",
                 placeholder: '# texte=icône\nréunion=calendar\nfacture=receipt',
-                resetTooltip: 'Restaurer les valeurs par défaut'
+                editTooltip: 'Modifier les correspondances'
             },
             showCategoryIcons: {
                 name: 'Icônes par type de fichier',
@@ -721,7 +724,7 @@ export const STRINGS_FR = {
                 name: 'Correspondance type-icône',
                 desc: "Les fichiers avec l'extension obtiennent l'icône spécifiée. Une correspondance par ligne : extension=icône",
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: 'Restaurer les valeurs par défaut'
+                editTooltip: 'Modifier les correspondances'
             },
             optimizeNoteHeight: {
                 name: 'Optimiser la hauteur des notes',

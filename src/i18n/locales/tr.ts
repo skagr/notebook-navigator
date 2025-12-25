@@ -248,6 +248,9 @@ export const STRINGS_TR = {
             removeIcon: 'Simgeyi kaldır',
             allTabLabel: 'Tümü'
         },
+        fileIconRuleEditor: {
+            addRuleAria: 'Kural ekle'
+        },
         colorPicker: {
             currentColor: 'Mevcut',
             newColor: 'Yeni',
@@ -709,7 +712,7 @@ export const STRINGS_TR = {
                 name: 'Dosya adı simge eşlemesi',
                 desc: 'Metni içeren dosyalar belirtilen simgeyi alır. Satır başına bir eşleme: metin=simge',
                 placeholder: '# metin=simge\ntoplantı=calendar\nfatura=receipt',
-                resetTooltip: 'Varsayılanları geri yükle'
+                editTooltip: 'Eşlemeleri düzenle'
             },
             showCategoryIcons: {
                 name: 'Dosya türüne göre simgeler',
@@ -719,7 +722,7 @@ export const STRINGS_TR = {
                 name: 'Dosya türü simge eşlemesi',
                 desc: 'Uzantıya sahip dosyalar belirtilen simgeyi alır. Satır başına bir eşleme: uzantı=simge',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: 'Varsayılanları geri yükle'
+                editTooltip: 'Eşlemeleri düzenle'
             },
             optimizeNoteHeight: {
                 name: 'Not yüksekliğini optimize et',

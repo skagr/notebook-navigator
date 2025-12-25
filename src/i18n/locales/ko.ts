@@ -247,6 +247,9 @@ export const STRINGS_KO = {
             removeIcon: '아이콘 제거',
             allTabLabel: '모두'
         },
+        fileIconRuleEditor: {
+            addRuleAria: '규칙 추가'
+        },
         colorPicker: {
             currentColor: '현재',
             newColor: '새로운',
@@ -709,7 +712,7 @@ export const STRINGS_KO = {
                 name: '파일 이름 아이콘 맵',
                 desc: '텍스트를 포함하는 파일에 지정된 아이콘이 적용됩니다. 줄당 하나의 매핑: 텍스트=아이콘',
                 placeholder: '# 텍스트=아이콘\n회의=calendar\n청구서=receipt',
-                resetTooltip: '기본값 복원'
+                editTooltip: '매핑 편집'
             },
             showCategoryIcons: {
                 name: '파일 유형으로 아이콘 설정',
@@ -719,7 +722,7 @@ export const STRINGS_KO = {
                 name: '파일 유형 아이콘 맵',
                 desc: '확장자가 있는 파일에 지정된 아이콘이 적용됩니다. 줄당 하나의 매핑: 확장자=아이콘',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: '기본값 복원'
+                editTooltip: '매핑 편집'
             },
             optimizeNoteHeight: {
                 name: '노트 높이 최적화',

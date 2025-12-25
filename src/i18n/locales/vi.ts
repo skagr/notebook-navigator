@@ -248,6 +248,9 @@ export const STRINGS_VI = {
             removeIcon: 'Gỡ biểu tượng',
             allTabLabel: 'Tất cả'
         },
+        fileIconRuleEditor: {
+            addRuleAria: 'Thêm quy tắc'
+        },
         colorPicker: {
             currentColor: 'Hiện tại',
             newColor: 'Mới',
@@ -709,7 +712,7 @@ export const STRINGS_VI = {
                 name: 'Bản đồ biểu tượng tên tệp',
                 desc: 'Tệp chứa văn bản sẽ nhận biểu tượng được chỉ định. Một ánh xạ mỗi dòng: văn bản=biểu tượng',
                 placeholder: '# văn bản=biểu tượng\nhọp=calendar\nhóa đơn=receipt',
-                resetTooltip: 'Khôi phục mặc định'
+                editTooltip: 'Chỉnh sửa ánh xạ'
             },
             showCategoryIcons: {
                 name: 'Biểu tượng theo loại tệp',
@@ -719,7 +722,7 @@ export const STRINGS_VI = {
                 name: 'Bản đồ biểu tượng loại tệp',
                 desc: 'Tệp có phần mở rộng sẽ nhận biểu tượng được chỉ định. Một ánh xạ mỗi dòng: phần mở rộng=biểu tượng',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: 'Khôi phục mặc định'
+                editTooltip: 'Chỉnh sửa ánh xạ'
             },
             optimizeNoteHeight: {
                 name: 'Tối ưu chiều cao ghi chú',

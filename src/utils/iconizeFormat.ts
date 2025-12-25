@@ -428,12 +428,44 @@ export function normalizeIconMapEntry(key: string, iconId: string, normalizeKey:
         return null;
     }
 
-    const canonicalIconId = normalizeCanonicalIconId(iconId);
+    const canonicalIconId = normalizeIconMapIconId(iconId);
     if (!canonicalIconId) {
         return null;
     }
 
     return { key: normalizedKey, iconId: canonicalIconId };
+}
+
+/**
+ * Normalizes an icon identifier from icon map input, converting Iconize format and emojis.
+ * Returns null for invalid or unrecognized identifiers.
+ */
+function normalizeIconMapIconId(iconId: string): string | null {
+    const trimmed = iconId.trim();
+    if (!trimmed) {
+        return null;
+    }
+
+    // Convert Iconize PascalCase identifiers (e.g. SiGithub -> simple-icons:github)
+    const iconizeConverted = convertIconizeToIconId(trimmed);
+    if (iconizeConverted) {
+        const canonical = normalizeCanonicalIconId(iconizeConverted);
+        return canonical && canonical.length > 0 ? canonical : null;
+    }
+
+    // Wrap standalone emoji characters with the emoji provider prefix
+    const emojiOnly = extractFirstEmoji(trimmed);
+    if (emojiOnly && emojiOnly === trimmed) {
+        return `emoji:${emojiOnly}`;
+    }
+
+    // Heuristic: treat unknown Iconize-style identifiers as invalid rather than lucide names.
+    if (!trimmed.includes(':') && /[A-Z]/.test(trimmed) && !/[-_]/.test(trimmed)) {
+        return null;
+    }
+
+    const canonical = normalizeCanonicalIconId(trimmed);
+    return canonical && canonical.length > 0 ? canonical : null;
 }
 
 export function normalizeIconMapRecord(record: Record<string, string>, normalizeKey: (input: string) => string): Record<string, string> {

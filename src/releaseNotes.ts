@@ -76,6 +76,19 @@ const RELEASE_NOTES: ReleaseNote[] = [
         version: '1.9.3',
         date: '2025-12-23',
         showOnUpdate: true,
+        new: [
+            '==File name icons and file type icons can now be edited with a new visual editor==. Just click the new **edit button** next to each text field in Settings > Notes > Icons.'
+        ],
+        improved: ['File name icons and file type icons can now be assigned from any installed icon pack.'],
+        changed: [
+            'Removed the "Reset" button next to the file name and file icon mapping text fields to avoid removing mappings by accident.'
+        ],
+        fixed: ['Fixed toolbar button spacing on all Android devices and iOS devices running Obsidian 1.10 and earlier.']
+    },
+    {
+        version: '1.9.3',
+        date: '2025-12-23',
+        showOnUpdate: true,
         info: 'The two major improvements in this release are 1: ==File icons==. You can now define rules so file names with certain text and extensions now show specific icons. 2. You can now ==Resize the pinned shortcuts area==. This makes it much easier to manage a large set of shortcuts. Merry Christmas!',
         new: [
             'New setting: Notes > Appearance > ==Icons by file name==. Map file name substrings to icons. Default disabled.',

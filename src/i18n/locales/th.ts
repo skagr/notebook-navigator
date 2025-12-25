@@ -248,6 +248,9 @@ export const STRINGS_TH = {
             removeIcon: 'นำไอคอนออก',
             allTabLabel: 'ทั้งหมด'
         },
+        fileIconRuleEditor: {
+            addRuleAria: 'เพิ่มกฎ'
+        },
         colorPicker: {
             currentColor: 'ปัจจุบัน',
             newColor: 'ใหม่',
@@ -709,7 +712,7 @@ export const STRINGS_TH = {
                 name: 'แผนที่ไอคอนชื่อไฟล์',
                 desc: 'ไฟล์ที่มีข้อความจะได้รับไอคอนที่กำหนด หนึ่งการแมปต่อบรรทัด: ข้อความ=ไอคอน',
                 placeholder: '# ข้อความ=ไอคอน\nประชุม=calendar\nใบแจ้งหนี้=receipt',
-                resetTooltip: 'คืนค่าเริ่มต้น'
+                editTooltip: 'แก้ไขการแมป'
             },
             showCategoryIcons: {
                 name: 'ไอคอนตามประเภทไฟล์',
@@ -719,7 +722,7 @@ export const STRINGS_TH = {
                 name: 'แผนที่ไอคอนประเภทไฟล์',
                 desc: 'ไฟล์ที่มีนามสกุลจะได้รับไอคอนที่กำหนด หนึ่งการแมปต่อบรรทัด: นามสกุล=ไอคอน',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: 'คืนค่าเริ่มต้น'
+                editTooltip: 'แก้ไขการแมป'
             },
             optimizeNoteHeight: {
                 name: 'ปรับความสูงโน้ตให้เหมาะสม',

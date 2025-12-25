@@ -248,6 +248,9 @@ export const STRINGS_ZH_TW = {
             removeIcon: '移除圖示',
             allTabLabel: '全部'
         },
+        fileIconRuleEditor: {
+            addRuleAria: '新增規則'
+        },
         colorPicker: {
             currentColor: '目前',
             newColor: '新增',
@@ -708,7 +711,7 @@ export const STRINGS_ZH_TW = {
                 name: '檔案名稱圖示對應',
                 desc: '包含指定文字的檔案將獲得指定圖示。每行一個對應：文字=圖示',
                 placeholder: '# 文字=圖示\n會議=calendar\n發票=receipt',
-                resetTooltip: '恢復預設值'
+                editTooltip: '編輯對應'
             },
             showCategoryIcons: {
                 name: '依檔案類型設定圖示',
@@ -718,7 +721,7 @@ export const STRINGS_ZH_TW = {
                 name: '檔案類型圖示對應',
                 desc: '具有指定副檔名的檔案將獲得指定圖示。每行一個對應：副檔名=圖示',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: '恢復預設值'
+                editTooltip: '編輯對應'
             },
             optimizeNoteHeight: {
                 name: '最佳化筆記高度',

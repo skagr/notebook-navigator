@@ -248,6 +248,9 @@ export const STRINGS_JA = {
             removeIcon: 'アイコンを削除',
             allTabLabel: 'すべて'
         },
+        fileIconRuleEditor: {
+            addRuleAria: 'ルールを追加'
+        },
         colorPicker: {
             currentColor: '現在',
             newColor: '新規',
@@ -710,7 +713,7 @@ export const STRINGS_JA = {
                 name: 'ファイル名アイコンマップ',
                 desc: 'テキストを含むファイルに指定したアイコンが適用されます。1行に1つのマッピング: テキスト=アイコン',
                 placeholder: '# テキスト=アイコン\n会議=calendar\n請求書=receipt',
-                resetTooltip: 'デフォルトに戻す'
+                editTooltip: 'マッピングを編集'
             },
             showCategoryIcons: {
                 name: 'ファイルタイプでアイコン設定',
@@ -720,7 +723,7 @@ export const STRINGS_JA = {
                 name: 'ファイルタイプアイコンマップ',
                 desc: '拡張子を持つファイルに指定したアイコンが適用されます。1行に1つのマッピング: 拡張子=アイコン',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: 'デフォルトに戻す'
+                editTooltip: 'マッピングを編集'
             },
             optimizeNoteHeight: {
                 name: 'ノートの高さを最適化',

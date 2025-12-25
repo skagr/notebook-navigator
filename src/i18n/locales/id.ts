@@ -248,6 +248,9 @@ export const STRINGS_ID = {
             removeIcon: 'Hapus ikon',
             allTabLabel: 'Semua'
         },
+        fileIconRuleEditor: {
+            addRuleAria: 'Tambah aturan'
+        },
         colorPicker: {
             currentColor: 'Saat ini',
             newColor: 'Baru',
@@ -709,7 +712,7 @@ export const STRINGS_ID = {
                 name: 'Peta ikon nama file',
                 desc: 'File yang berisi teks mendapat ikon yang ditentukan. Satu pemetaan per baris: teks=ikon',
                 placeholder: '# teks=ikon\nrapat=calendar\nfaktur=receipt',
-                resetTooltip: 'Kembalikan ke default'
+                editTooltip: 'Edit pemetaan'
             },
             showCategoryIcons: {
                 name: 'Ikon berdasarkan tipe file',
@@ -719,7 +722,7 @@ export const STRINGS_ID = {
                 name: 'Peta ikon tipe file',
                 desc: 'File dengan ekstensi mendapat ikon yang ditentukan. Satu pemetaan per baris: ekstensi=ikon',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: 'Kembalikan ke default'
+                editTooltip: 'Edit pemetaan'
             },
             optimizeNoteHeight: {
                 name: 'Optimalkan tinggi catatan',

@@ -248,6 +248,9 @@ export const STRINGS_EN = {
             removeIcon: 'Remove icon',
             allTabLabel: 'All'
         },
+        fileIconRuleEditor: {
+            addRuleAria: 'Add rule'
+        },
         colorPicker: {
             currentColor: 'Current',
             newColor: 'New',
@@ -709,7 +712,7 @@ export const STRINGS_EN = {
                 name: 'File name icon map',
                 desc: 'Files containing the text get the specified icon. One mapping per line: text=icon',
                 placeholder: '# Text=icon\nmeeting=calendar\ninvoice=receipt',
-                resetTooltip: 'Restore defaults'
+                editTooltip: 'Edit mappings'
             },
             showCategoryIcons: {
                 name: 'Icons by file type',
@@ -719,7 +722,7 @@ export const STRINGS_EN = {
                 name: 'File type icon map',
                 desc: 'Files with the extension get the specified icon. One mapping per line: extension=icon',
                 placeholder: '# Extension=icon\ncpp=file-code\npdf=book-open',
-                resetTooltip: 'Restore defaults'
+                editTooltip: 'Edit mappings'
             },
             optimizeNoteHeight: {
                 name: 'Optimize note height',
