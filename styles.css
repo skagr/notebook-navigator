@@ -260,7 +260,6 @@ body {
     --nn-theme-mobile-list-header-breadcrumb-color: var(--text-normal);
     --nn-theme-mobile-list-header-breadcrumb-font-weight: 600;
     --nn-theme-mobile-toolbar-bg: var(--background-secondary);
-    --nn-theme-mobile-toolbar-border-color: var(--background-modifier-border);
     --nn-theme-mobile-toolbar-button-icon-color: var(--link-color);
     --nn-theme-mobile-toolbar-button-active-bg: var(--background-modifier-hover);
     --nn-theme-mobile-toolbar-button-active-icon-color: var(--link-color);
@@ -4858,7 +4857,6 @@ body.nn-list-pane-transparent .notebook-navigator-obsidian-1-11-plus-ios .nn-lis
     justify-content: space-between;
     align-items: center;
     background-color: var(--nn-theme-list-bg);
-    border-top: 1px solid var(--nn-theme-mobile-toolbar-border-color);
     flex-shrink: 0;
     padding: 0 8px;
 
@@ -5067,13 +5065,12 @@ body.nn-list-pane-transparent .notebook-navigator-obsidian-1-11-plus-ios .nn-lis
    ======================================================================== */
 
 /* Android: toolbar at top with reduced height */
-.notebook-navigator-android .nn-mobile-toolbar {
+.notebook-navigator-mobile.notebook-navigator-android .nn-mobile-toolbar {
     background-color: var(--nn-theme-list-bg);
-    border-top: none;
-    border-bottom: 1px solid var(--nn-theme-mobile-toolbar-border-color);
+    border: none;
     padding-bottom: 0;
-    justify-content: flex-end;
-    gap: 8px;
+    justify-content: center;
+    gap: 16px;
     height: 44px;
     min-height: 44px;
 }
@@ -6468,15 +6465,6 @@ settings:
         type: variable-themed-color
         opacity: true
         format: rgb
-        default-light: '#'
-        default-dark: '#'
-    -
-    -
-        id: nn-theme-mobile-toolbar-border-color
-        title: Mobile toolbar border color
-        description: Border color of the mobile toolbar.
-        type: variable-themed-color
-        format: hex
         default-light: '#'
         default-dark: '#'
     -

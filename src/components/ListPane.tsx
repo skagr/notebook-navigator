@@ -970,6 +970,23 @@ export const ListPane = React.memo(
                         }
                     }}
                 />
+                {/* Android - toolbar at top */}
+                {isMobile && isAndroid && (
+                    <ListToolbar
+                        isSearchActive={isSearchActive}
+                        onSearchToggle={() => {
+                            if (!isSearchActive) {
+                                // Opening search - activate with focus
+                                setShouldFocusSearch(true);
+                                setIsSearchActive(true);
+                                uiDispatch({ type: 'SET_FOCUSED_PANE', pane: 'search' });
+                            } else {
+                                setIsSearchActive(false);
+                                uiDispatch({ type: 'SET_FOCUSED_PANE', pane: 'files' });
+                            }
+                        }}
+                    />
+                )}
                 {/* Search bar - collapsible */}
                 <div className={`nn-search-bar-container ${isSearchActive ? 'nn-search-bar-visible' : ''}`}>
                     {isSearchActive && (
@@ -994,23 +1011,6 @@ export const ListPane = React.memo(
                         />
                     )}
                 </div>
-                {/* Android - toolbar at top */}
-                {isMobile && isAndroid && (
-                    <ListToolbar
-                        isSearchActive={isSearchActive}
-                        onSearchToggle={() => {
-                            if (!isSearchActive) {
-                                // Opening search - activate with focus
-                                setShouldFocusSearch(true);
-                                setIsSearchActive(true);
-                                uiDispatch({ type: 'SET_FOCUSED_PANE', pane: 'search' });
-                            } else {
-                                setIsSearchActive(false);
-                                uiDispatch({ type: 'SET_FOCUSED_PANE', pane: 'files' });
-                            }
-                        }}
-                    />
-                )}
 
                 {/* Conditional content rendering */}
                 {isEmptySelection ? (

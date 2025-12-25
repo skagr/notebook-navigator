@@ -73,17 +73,21 @@ export interface ReleaseNote {
  */
 const RELEASE_NOTES: ReleaseNote[] = [
     {
-        version: '1.9.3',
-        date: '2025-12-23',
+        version: '1.9.4',
+        date: '2025-12-29',
         showOnUpdate: true,
         new: [
             '==File name icons and file type icons can now be edited with a new visual editor==. Just click the new **edit button** next to each text field in Settings > Notes > Icons.'
         ],
-        improved: ['File name icons and file type icons can now be assigned from any installed icon pack.'],
-        changed: [
-            'Removed the "Reset" button next to the file name and file icon mapping text fields to avoid removing mappings by accident.'
+        improved: [
+            'File name icons and file type icons can now be assigned from any installed icon pack.',
+            'Improved toolbar button layout on all Android devices and iOS devices running Obsidian 1.10 and earlier.'
         ],
-        fixed: ['Fixed toolbar button spacing on all Android devices and iOS devices running Obsidian 1.10 and earlier.']
+        changed: [
+            'Removed the "Reset" button next to the file name and file icon mapping text fields to avoid removing mappings by accident.',
+            'Removed the theming variable --nn-theme-mobile-toolbar-border-color since it is no longer used.'
+        ],
+        fixed: []
     },
     {
         version: '1.9.3',

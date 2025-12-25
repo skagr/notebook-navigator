@@ -179,7 +179,6 @@ Color-only tag pills use the navigation pane background and follow the backgroun
 | `--nn-theme-mobile-list-header-breadcrumb-color`       | `var(--text-normal)`                                             | Color for current folder and separators in breadcrumb on mobile                                                  |
 | `--nn-theme-mobile-list-header-breadcrumb-font-weight` | `600`                                                            | Font weight for mobile breadcrumb                                                                                |
 | `--nn-theme-mobile-toolbar-bg`                         | `var(--background-secondary)`                                    | Background color of the mobile toolbar                                                                           |
-| `--nn-theme-mobile-toolbar-border-color`               | `var(--background-modifier-border)`                              | Border color of the mobile toolbar                                                                               |
 | `--nn-theme-mobile-toolbar-button-icon-color`          | `var(--link-color)`                                              | Icon color for toolbar buttons                                                                                   |
 | `--nn-theme-mobile-toolbar-button-active-bg`           | `var(--background-modifier-hover)`                               | Background color for active toolbar button                                                                       |
 | `--nn-theme-mobile-toolbar-button-active-icon-color`   | `var(--link-color)`                                              | Icon color for active toolbar button                                                                             |
@@ -327,7 +326,6 @@ body {
   --nn-theme-mobile-list-header-breadcrumb-color: #a9b7c6; /* Soft blue-gray - current folder and separators */
   --nn-theme-mobile-list-header-breadcrumb-font-weight: 600; /* Bold weight - mobile breadcrumb */
   --nn-theme-mobile-toolbar-bg: #3c3f41; /* Dark gray sidebar - mobile toolbar background */
-  --nn-theme-mobile-toolbar-border-color: #555555; /* Subtle gray - mobile toolbar border */
   --nn-theme-mobile-toolbar-button-icon-color: #a9b7c6; /* Soft blue-gray - mobile toolbar icons */
   --nn-theme-mobile-toolbar-button-active-bg: #4a78c8; /* Blue accent - active mobile button background */
   --nn-theme-mobile-toolbar-button-active-icon-color: #ffffff; /* White - active mobile button icons */
