@@ -529,6 +529,7 @@ export const STRINGS_ID = {
         navigateToFolder: 'Navigasi ke folder',
         navigateToTag: 'Navigasi ke tag',
         addShortcut: 'Tambahkan ke pintasan',
+        openShortcut: 'Buka pintasan {number}',
         toggleDescendants: 'Alihkan turunan',
         toggleHidden: 'Alihkan folder, tag, dan catatan tersembunyi',
         toggleTagSort: 'Alihkan urutan tag',
@@ -582,7 +583,6 @@ export const STRINGS_ID = {
                 behavior: 'Perilaku',
                 view: 'Tampilan',
                 desktopAppearance: 'Tampilan desktop',
-                mobileAppearance: 'Tampilan mobile',
                 formatting: 'Pemformatan'
             },
             navigation: {

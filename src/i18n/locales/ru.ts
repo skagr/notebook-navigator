@@ -529,6 +529,7 @@ export const STRINGS_RU = {
         navigateToFolder: 'Перейти к папке', // Command palette: Navigate to a folder using fuzzy search (English: Navigate to folder)
         navigateToTag: 'Перейти к тегу', // Command palette: Navigate to a tag using fuzzy search (English: Navigate to tag)
         addShortcut: 'Добавить в ярлыки', // Command palette: Adds the current file, folder, or tag to shortcuts (English: Add to shortcuts)
+        openShortcut: 'Открыть ярлык {number}',
         toggleDescendants: 'Переключить потомков', // Command palette: Toggles showing notes from descendants (English: Toggle descendants)
         toggleHidden: 'Переключить скрытые папки, теги и заметки', // Command palette: Toggles showing hidden items (English: Toggle hidden items)
         toggleTagSort: 'Переключить сортировку тегов', // Command palette: Toggles between alphabetical and frequency tag sorting (English: Toggle tag sort order)
@@ -582,7 +583,6 @@ export const STRINGS_RU = {
                 behavior: 'Поведение',
                 view: 'Внешний вид',
                 desktopAppearance: 'Внешний вид на компьютере',
-                mobileAppearance: 'Внешний вид на мобильном',
                 formatting: 'Форматирование'
             },
             navigation: {

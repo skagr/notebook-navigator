@@ -530,6 +530,7 @@ export const STRINGS_FR = {
         navigateToFolder: 'Naviguer vers le dossier', // Command palette: Navigate to a folder using fuzzy search (English: Navigate to folder)
         navigateToTag: "Naviguer vers l'étiquette", // Command palette: Navigate to a tag using fuzzy search (English: Navigate to tag)
         addShortcut: 'Ajouter aux raccourcis', // Command palette: Adds the current file, folder, or tag to shortcuts (English: Add to shortcuts)
+        openShortcut: 'Ouvrir le raccourci {number}',
         toggleDescendants: 'Basculer descendants', // Command palette: Toggles showing notes from descendants (English: Toggle descendants)
         toggleHidden: 'Basculer les dossiers, étiquettes et notes masqués', // Command palette: Toggles showing hidden items (English: Toggle hidden items)
         toggleTagSort: 'Basculer le tri des étiquettes', // Command palette: Toggles between alphabetical and frequency tag sorting (English: Toggle tag sort order)
@@ -583,7 +584,6 @@ export const STRINGS_FR = {
                 behavior: 'Comportement',
                 view: 'Apparence',
                 desktopAppearance: 'Apparence sur ordinateur',
-                mobileAppearance: 'Apparence mobile',
                 formatting: 'Formatage'
             },
             navigation: {

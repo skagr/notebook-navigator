@@ -113,9 +113,6 @@ export interface NotebookNavigatorSettings {
     showTooltipPath: boolean;
     desktopBackground: BackgroundMode;
     desktopScale: number;
-
-    // General tab - Mobile appearance
-    mobileBackground: BackgroundMode;
     mobileScale: number;
 
     // General tab - Formatting

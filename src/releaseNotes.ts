@@ -77,7 +77,9 @@ const RELEASE_NOTES: ReleaseNote[] = [
         date: '2025-12-29',
         showOnUpdate: true,
         new: [
-            '==File name icons and file type icons can now be edited with a new visual editor==. Just click the new **edit button** next to each text field in Settings > Notes > Icons.'
+            '==File name icons and file type icons can now be edited with a new visual editor==. Just click the new **edit button** next to each text field in Settings > Notes > Icons.',
+            'New commands: ==Open shortcut 1-9==. Use this to quickly open files, navigate to folders/tags, or load a custom search filter.',
+            'New theme variable: ==--nn-theme-mobile-bg== to change mobile background color. Set it in Style settings or through themes / CSS.'
         ],
         improved: [
             'File name icons and file type icons can now be assigned from any installed icon pack.',
@@ -88,7 +90,7 @@ const RELEASE_NOTES: ReleaseNote[] = [
             'Removed the "Reset" button next to the file name and file icon mapping text fields to avoid removing mappings by accident.',
             'Removed the theming variable --nn-theme-mobile-toolbar-border-color since it is no longer used.'
         ],
-        fixed: []
+        fixed: ['Fixed vertical text alignment in tag pills for certain fonts by adding explicit line-height.']
     },
     {
         version: '1.9.3',

@@ -529,6 +529,7 @@ export const STRINGS_FA = {
         navigateToFolder: 'رفتن به پوشه',
         navigateToTag: 'رفتن به برچسب',
         addShortcut: 'افزودن به میانبرها',
+        openShortcut: 'باز کردن میانبر {number}',
         toggleDescendants: 'تغییر زیرمجموعه‌ها',
         toggleHidden: 'تغییر پوشه‌ها، برچسب‌ها و یادداشت‌های مخفی',
         toggleTagSort: 'تغییر ترتیب مرتب‌سازی برچسب',
@@ -582,7 +583,6 @@ export const STRINGS_FA = {
                 behavior: 'رفتار',
                 view: 'ظاهر',
                 desktopAppearance: 'ظاهر دسکتاپ',
-                mobileAppearance: 'ظاهر موبایل',
                 formatting: 'قالب‌بندی'
             },
             navigation: {

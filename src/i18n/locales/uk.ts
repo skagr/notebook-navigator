@@ -529,6 +529,7 @@ export const STRINGS_UK = {
         navigateToFolder: 'Перейти до папки', // Command palette: Navigate to a folder using fuzzy search (English: Navigate to folder)
         navigateToTag: 'Перейти до тегу', // Command palette: Navigate to a tag using fuzzy search (English: Navigate to tag)
         addShortcut: 'Додати до ярликів', // Command palette: Adds the current file, folder, or tag to shortcuts (English: Add to shortcuts)
+        openShortcut: 'Відкрити ярлик {number}',
         toggleDescendants: 'Перемкнути нащадків', // Command palette: Toggles showing notes from descendants (English: Toggle descendants)
         toggleHidden: 'Перемкнути приховані папки, теги та нотатки', // Command palette: Toggles showing hidden items (English: Toggle hidden items)
         toggleTagSort: 'Перемкнути порядок сортування тегів', // Command palette: Toggles between alphabetical and frequency tag sorting (English: Toggle tag sort order)
@@ -582,7 +583,6 @@ export const STRINGS_UK = {
                 behavior: 'Поведінка',
                 view: 'Вигляд',
                 desktopAppearance: "Вигляд на комп'ютері",
-                mobileAppearance: 'Вигляд на мобільному',
                 formatting: 'Форматування'
             },
             navigation: {

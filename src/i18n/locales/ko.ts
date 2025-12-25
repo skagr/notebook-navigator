@@ -529,6 +529,7 @@ export const STRINGS_KO = {
         navigateToFolder: '폴더로 이동', // Command palette: Navigate to a folder using fuzzy search (English: Navigate to folder)
         navigateToTag: '태그로 이동', // Command palette: Navigate to a tag using fuzzy search (English: Navigate to tag)
         addShortcut: '바로가기에 추가', // Command palette: Adds the current file, folder, or tag to shortcuts (English: Add to shortcuts)
+        openShortcut: '바로가기 {number} 열기',
         toggleDescendants: '하위 항목 전환', // Command palette: Toggles showing notes from descendants (English: Toggle descendants)
         toggleHidden: '숨긴 폴더, 태그, 노트 전환', // Command palette: Toggles showing hidden items (English: Toggle hidden items)
         toggleTagSort: '태그 정렬 전환', // Command palette: Toggles between alphabetical and frequency tag sorting (English: Toggle tag sort order)
@@ -582,7 +583,6 @@ export const STRINGS_KO = {
                 behavior: '동작',
                 view: '모양',
                 desktopAppearance: '데스크톱 모양새',
-                mobileAppearance: '모바일 모양새',
                 formatting: '서식'
             },
             navigation: {

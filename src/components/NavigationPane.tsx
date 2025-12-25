@@ -120,6 +120,7 @@ import {
     SHORTCUT_DRAG_MIME,
     isFolderShortcut,
     isNoteShortcut,
+    isSearchShortcut,
     isTagShortcut
 } from '../types/shortcuts';
 import { strings } from '../i18n';
@@ -154,6 +155,7 @@ export interface NavigationPaneHandle {
     virtualizer: Virtualizer<HTMLDivElement, Element> | null;
     scrollContainerRef: HTMLDivElement | null;
     requestScroll: (path: string, options: { align?: 'auto' | 'center' | 'start' | 'end'; itemType: ItemType }) => void;
+    openShortcutByNumber: (shortcutNumber: number) => Promise<boolean>;
 }
 
 interface NavigationPaneProps {
@@ -861,7 +863,6 @@ export const NavigationPane = React.memo(
             shouldPinRecentNotes,
             tagsVirtualFolderHasChildren,
             pathToIndex,
-            shortcutIndex,
             tagCounts,
             folderCounts,
             rootLevelFolders,
@@ -1358,25 +1359,6 @@ export const NavigationPane = React.memo(
             uiDispatch({ type: 'SET_PIN_SHORTCUTS', value: !uiState.pinShortcuts });
         }, [uiDispatch, uiState.pinShortcuts]);
 
-        // Scrolls shortcut into view - scrolls to top for pinned shortcuts or to item index for inline
-        const scrollShortcutIntoView = useCallback(
-            (shortcutKey: string) => {
-                // When shortcuts are pinned, scroll to top to show pinned area
-                if (shouldPinShortcuts) {
-                    const container = scrollContainerRef.current;
-                    if (container) {
-                        container.scrollTo({ top: 0, behavior: 'auto' });
-                    }
-                    return;
-                }
-                const index = shortcutIndex.get(shortcutKey);
-                if (index !== undefined) {
-                    rowVirtualizer.scrollToIndex(index, { align: 'auto' });
-                }
-            },
-            [shortcutIndex, rowVirtualizer, shouldPinShortcuts, scrollContainerRef]
-        );
-
         // Clears active shortcut after two animation frames to allow visual feedback
         const scheduleShortcutRelease = useCallback(() => {
             const release = () => setActiveShortcut(null);
@@ -1498,13 +1480,12 @@ export const NavigationPane = React.memo(
         const handleShortcutSearchActivate = useCallback(
             (shortcutKey: string, searchShortcut: SearchShortcut) => {
                 setActiveShortcut(shortcutKey);
-                scrollShortcutIntoView(shortcutKey);
                 if (onExecuteSearchShortcut) {
                     runAsyncAction(() => onExecuteSearchShortcut(shortcutKey, searchShortcut));
                 }
                 scheduleShortcutRelease();
             },
-            [setActiveShortcut, scrollShortcutIntoView, onExecuteSearchShortcut, scheduleShortcutRelease]
+            [setActiveShortcut, onExecuteSearchShortcut, scheduleShortcutRelease]
         );
 
         // Handles tag shortcut activation - navigates to tag and shows its files
@@ -2497,9 +2478,57 @@ export const NavigationPane = React.memo(
                 },
                 virtualizer: rowVirtualizer,
                 scrollContainerRef: scrollContainerRef.current,
-                requestScroll
+                requestScroll,
+                openShortcutByNumber: async (shortcutNumber: number) => {
+                    if (!Number.isInteger(shortcutNumber) || shortcutNumber < 1) {
+                        return false;
+                    }
+
+                    const entry = hydratedShortcuts[shortcutNumber - 1];
+                    if (!entry || entry.isMissing) {
+                        return false;
+                    }
+
+                    const { key, shortcut, folder, note, search, tagPath } = entry;
+
+                    if (isFolderShortcut(shortcut) && folder) {
+                        handleShortcutFolderActivate(folder, key);
+                        return true;
+                    }
+
+                    if (isNoteShortcut(shortcut) && note) {
+                        handleShortcutNoteActivate(note, key);
+                        return true;
+                    }
+
+                    if (isSearchShortcut(shortcut)) {
+                        handleShortcutSearchActivate(key, search ?? shortcut);
+                        return true;
+                    }
+
+                    if (isTagShortcut(shortcut)) {
+                        const resolvedTagPath = tagPath ?? shortcut.tagPath;
+                        if (!resolvedTagPath) {
+                            return false;
+                        }
+                        handleShortcutTagActivate(resolvedTagPath, key);
+                        return true;
+                    }
+
+                    return false;
+                }
             }),
-            [pathToIndex, rowVirtualizer, requestScroll, scrollContainerRef]
+            [
+                pathToIndex,
+                rowVirtualizer,
+                requestScroll,
+                scrollContainerRef,
+                hydratedShortcuts,
+                handleShortcutFolderActivate,
+                handleShortcutNoteActivate,
+                handleShortcutSearchActivate,
+                handleShortcutTagActivate
+            ]
         );
 
         // Add keyboard navigation

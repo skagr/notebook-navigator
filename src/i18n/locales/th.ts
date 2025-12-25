@@ -529,6 +529,7 @@ export const STRINGS_TH = {
         navigateToFolder: 'นำทางไปยังโฟลเดอร์',
         navigateToTag: 'นำทางไปยังแท็ก',
         addShortcut: 'เพิ่มในทางลัด',
+        openShortcut: 'เปิดทางลัด {number}',
         toggleDescendants: 'สลับลูกหลาน',
         toggleHidden: 'สลับโฟลเดอร์ แท็ก และโน้ตที่ซ่อน',
         toggleTagSort: 'สลับลำดับการเรียงแท็ก',
@@ -582,7 +583,6 @@ export const STRINGS_TH = {
                 behavior: 'พฤติกรรม',
                 view: 'ลักษณะ',
                 desktopAppearance: 'ลักษณะเดสก์ท็อป',
-                mobileAppearance: 'ลักษณะมือถือ',
                 formatting: 'การจัดรูปแบบ'
             },
             navigation: {

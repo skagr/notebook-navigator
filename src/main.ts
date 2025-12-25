@@ -211,6 +211,7 @@ export default class NotebookNavigatorPlugin extends Plugin implements ISettings
         delete mutableSettings.hiddenTags;
         delete mutableSettings.fileVisibility;
         delete mutableSettings.preventInvalidCharacters;
+        delete mutableSettings.mobileBackground;
 
         const storedNoteGrouping = storedData ? storedData['noteGrouping'] : undefined;
 

@@ -530,6 +530,7 @@ export const STRINGS_PT_BR = {
         navigateToFolder: 'Navegar para pasta',
         navigateToTag: 'Navegar para tag',
         addShortcut: 'Adicionar aos atalhos',
+        openShortcut: 'Abrir atalho {number}',
         toggleDescendants: 'Alternar descendentes',
         toggleHidden: 'Alternar pastas, tags e notas ocultas',
         toggleTagSort: 'Alternar ordem de classificação de tags',
@@ -583,7 +584,6 @@ export const STRINGS_PT_BR = {
                 behavior: 'Comportamento',
                 view: 'Aparência',
                 desktopAppearance: 'Aparência do desktop',
-                mobileAppearance: 'Aparência do celular',
                 formatting: 'Formatação'
             },
             navigation: {

@@ -527,30 +527,6 @@ export function renderGeneralTab(context: SettingsTabContext): void {
             );
     }
 
-    if (Platform.isMobile) {
-        const mobileAppearanceGroup = createGroup(strings.settings.groups.general.mobileAppearance);
-
-        mobileAppearanceGroup.addSetting(setting => {
-            setting
-                .setName(strings.settings.items.appearanceBackground.name)
-                .setDesc(strings.settings.items.appearanceBackground.desc)
-                .addDropdown(dropdown =>
-                    dropdown
-                        .addOptions({
-                            separate: strings.settings.items.appearanceBackground.options.separate,
-                            primary: strings.settings.items.appearanceBackground.options.primary,
-                            secondary: strings.settings.items.appearanceBackground.options.secondary
-                        })
-                        .setValue(plugin.settings.mobileBackground ?? 'primary')
-                        .onChange(async value => {
-                            const nextValue: BackgroundMode = value === 'primary' || value === 'secondary' ? value : 'separate';
-                            plugin.settings.mobileBackground = nextValue;
-                            await plugin.saveSettingsAndUpdate();
-                        })
-                );
-        });
-    }
-
     const viewGroup = createGroup(strings.settings.groups.general.view);
 
     const uiScaleSetting = viewGroup.addSetting(setting => {

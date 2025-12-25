@@ -256,6 +256,7 @@ body {
     --nn-theme-header-button-disabled-icon-color: var(--text-muted);
 
     /* -- Mobile Styles -- */
+    --nn-theme-mobile-bg: var(--mobile-sidebar-background);
     --nn-theme-mobile-list-header-link-color: var(--link-color);
     --nn-theme-mobile-list-header-breadcrumb-color: var(--text-normal);
     --nn-theme-mobile-list-header-breadcrumb-font-weight: 600;
@@ -580,13 +581,10 @@ body {
     --nn-theme-list-bg: var(--nn-theme-nav-bg);
 }
 
-/* Apply the same background overrides on mobile single-pane layout */
-.nn-split-container.nn-mobile.nn-bg-primary {
-    --nn-theme-nav-bg: var(--nn-theme-list-bg);
-}
-
-.nn-split-container.nn-mobile.nn-bg-secondary {
-    --nn-theme-list-bg: var(--nn-theme-nav-bg);
+/* Mobile pane backgrounds follow --nn-theme-mobile-bg */
+.nn-split-container.nn-mobile {
+    --nn-theme-nav-bg: var(--nn-theme-mobile-bg);
+    --nn-theme-list-bg: var(--nn-theme-mobile-bg);
 }
 
 .nn-split-container.nn-orientation-vertical {
@@ -2302,6 +2300,7 @@ body {
     display: inline-flex;
     align-items: center;
     height: 20px;
+    line-height: 20px;
     padding: 0 8px;
     background-color: var(--nn-theme-file-tag-bg);
     color: var(--nn-theme-file-tag-color);
@@ -5524,7 +5523,7 @@ settings:
     -
         id: nn-theme-nav-bg
         title: Navigation pane background
-        description: Background color of the navigation pane.
+        description: Background color of the navigation pane (desktop only).
         type: variable-themed-color
         format: hex
         default-light: '#'
@@ -5901,7 +5900,7 @@ settings:
     -
         id: nn-theme-list-bg
         title: List pane background
-        description: Background color of the list pane.
+        description: Background color of the list pane (desktop only).
         type: variable-themed-color
         format: hex
         default-light: '#'
@@ -6439,6 +6438,15 @@ settings:
         type: heading
         level: 1
         collapsed: true
+    -
+    -
+        id: nn-theme-mobile-bg
+        title: Mobile pane background
+        description: Background color of navigation and list panes on mobile.
+        type: variable-themed-color
+        format: hex
+        default-light: '#'
+        default-dark: '#'
     -
     -
         id: nn-theme-mobile-list-header-link-color

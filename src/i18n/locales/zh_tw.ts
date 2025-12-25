@@ -529,6 +529,7 @@ export const STRINGS_ZH_TW = {
         navigateToFolder: '導覽至資料夾', // 指令面板：使用模糊搜尋導覽至資料夾 (英文: Navigate to folder)
         navigateToTag: '導覽至標籤', // 指令面板：使用模糊搜尋導覽至標籤 (英文: Navigate to tag)
         addShortcut: '新增至捷徑', // 指令面板：將目前的檔案、資料夾或標籤加入捷徑 (英文: Add to shortcuts)
+        openShortcut: '開啟捷徑 {number}',
         toggleDescendants: '切換後代項目', // 指令面板：切換顯示後代中的筆記 (英文: Toggle descendants)
         toggleHidden: '切換隱藏的資料夾、標籤和筆記', // 指令面板：切換顯示隱藏項目 (英文: Toggle hidden items)
         toggleTagSort: '切換標籤排序', // 指令面板：在字母和頻率標籤排序之間切換 (英文: Toggle tag sort order)
@@ -582,7 +583,6 @@ export const STRINGS_ZH_TW = {
                 behavior: '行為',
                 view: '外觀',
                 desktopAppearance: '桌面外觀',
-                mobileAppearance: '行動裝置外觀',
                 formatting: '格式'
             },
             navigation: {

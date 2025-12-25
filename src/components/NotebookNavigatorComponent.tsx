@@ -100,6 +100,7 @@ export interface NotebookNavigatorHandle {
     rebuildCache: () => Promise<void>;
     selectNextFile: () => Promise<boolean>;
     selectPreviousFile: () => Promise<boolean>;
+    openShortcutByNumber: (shortcutNumber: number) => Promise<boolean>;
 }
 
 /**
@@ -123,9 +124,8 @@ export const NotebookNavigatorComponent = React.memo(
         }, [uxPreferences]);
         // Get active orientation from settings
         const orientation: DualPaneOrientation = settings.dualPaneOrientation;
-        // Get background modes for desktop and mobile layouts
+        // Get background mode for desktop layout
         const desktopBackground: BackgroundMode = settings.desktopBackground ?? 'separate';
-        const mobileBackground: BackgroundMode = settings.mobileBackground ?? 'primary';
         const {
             scale: uiScale,
             style: scaleWrapperStyle,
@@ -481,6 +481,13 @@ export const NotebookNavigatorComponent = React.memo(
                 // Select adjacent files via command palette actions
                 selectNextFile: async () => navigateToAdjacentFile('next'),
                 selectPreviousFile: async () => navigateToAdjacentFile('previous'),
+                openShortcutByNumber: (shortcutNumber: number) => {
+                    const navHandle = navigationPaneRef.current;
+                    if (!navHandle) {
+                        return Promise.resolve(false);
+                    }
+                    return navHandle.openShortcutByNumber(shortcutNumber);
+                },
                 // Delete focused file based on current pane (files or navigation)
                 deleteActiveFile: () => {
                     runAsyncAction(async () => {
@@ -726,8 +733,6 @@ export const NotebookNavigatorComponent = React.memo(
         // Add platform class and background mode classes
         if (isMobile) {
             containerClasses.push('nn-mobile');
-            // Apply mobile background mode (separate, primary, or secondary)
-            containerClasses.push(...getBackgroundClasses(mobileBackground));
         } else {
             containerClasses.push('nn-desktop');
             // Apply desktop background mode (separate, primary, or secondary)

@@ -531,6 +531,7 @@ export const STRINGS_NL = {
         navigateToFolder: 'Navigeren naar map',
         navigateToTag: 'Navigeren naar tag',
         addShortcut: 'Toevoegen aan snelkoppelingen',
+        openShortcut: 'Snelkoppeling {number} openen',
         toggleDescendants: 'Afstammelingen in-/uitschakelen',
         toggleHidden: 'Verborgen mappen, tags en notities in-/uitschakelen',
         toggleTagSort: 'Tag sorteervolgorde in-/uitschakelen',
@@ -584,7 +585,6 @@ export const STRINGS_NL = {
                 behavior: 'Gedrag',
                 view: 'Uiterlijk',
                 desktopAppearance: 'Desktop-uiterlijk',
-                mobileAppearance: 'Mobiel uiterlijk',
                 formatting: 'Opmaak'
             },
             navigation: {

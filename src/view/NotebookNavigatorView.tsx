@@ -341,6 +341,13 @@ export class NotebookNavigatorView extends ItemView {
     }
 
     /**
+     * Opens the shortcut at the given 1-based position in the shortcuts list.
+     */
+    async openShortcutByNumber(shortcutNumber: number): Promise<boolean> {
+        return (await this.componentRef.current?.openShortcutByNumber(shortcutNumber)) ?? false;
+    }
+
+    /**
      * Navigate to a folder by showing the folder suggest modal
      */
     async navigateToFolderWithModal(): Promise<void> {

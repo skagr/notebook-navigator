@@ -529,6 +529,7 @@ export const STRINGS_VI = {
         navigateToFolder: 'Chuyển đến thư mục', // Command palette: Navigate to a folder using fuzzy search (English: Navigate to folder)
         navigateToTag: 'Chuyển đến thẻ', // Command palette: Navigate to a tag using fuzzy search (English: Navigate to tag)
         addShortcut: 'Thêm vào lối tắt', // Command palette: Adds the current file, folder, or tag to shortcuts (English: Add to shortcuts)
+        openShortcut: 'Mở lối tắt {number}',
         toggleDescendants: 'Bật/tắt phần tử con', // Command palette: Toggles showing notes from descendants (English: Toggle descendants)
         toggleHidden: 'Bật/tắt thư mục, thẻ và ghi chú ẩn', // Command palette: Toggles showing hidden items (English: Toggle hidden items)
         toggleTagSort: 'Bật/tắt sắp xếp thẻ', // Command palette: Toggles between alphabetical and frequency tag sorting (English: Toggle tag sort order)
@@ -582,7 +583,6 @@ export const STRINGS_VI = {
                 behavior: 'Hành vi',
                 view: 'Giao diện',
                 desktopAppearance: 'Giao diện máy tính',
-                mobileAppearance: 'Giao diện di động',
                 formatting: 'Định dạng'
             },
             navigation: {

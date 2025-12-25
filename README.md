@@ -395,6 +395,7 @@ Set custom hotkeys for these commands in Obsidian's Hotkeys settings:
 - `Notebook Navigator: Navigate to folder` Search dialog to jump to any folder
 - `Notebook Navigator: Navigate to tag` Search dialog to jump to any tag
 - `Notebook Navigator: Add to shortcuts` Adds the current file, folder, or tag to shortcuts
+- `Notebook Navigator: Open shortcut 1-9` Opens shortcut by its position in the shortcuts list
 - `Notebook Navigator: Search` Opens quick search field or focuses it if already open. Search persists between sessions. **Suggestion:** Bind to a shortcut key like `Cmd/Ctrl+Shift+F` for quick file filtering
 
 **Selection**
@@ -446,6 +447,15 @@ Set custom hotkeys for these commands in Obsidian's Hotkeys settings:
 | `notebook-navigator:navigate-to-folder`     | Notebook Navigator: Navigate to folder                                                               |
 | `notebook-navigator:navigate-to-tag`        | Notebook Navigator: Navigate to tag                                                                  |
 | `notebook-navigator:add-shortcut`           | Notebook Navigator: Add to shortcuts                                                                 |
+| `notebook-navigator:open-shortcut-1`        | Notebook Navigator: Open shortcut 1                                                                  |
+| `notebook-navigator:open-shortcut-2`        | Notebook Navigator: Open shortcut 2                                                                  |
+| `notebook-navigator:open-shortcut-3`        | Notebook Navigator: Open shortcut 3                                                                  |
+| `notebook-navigator:open-shortcut-4`        | Notebook Navigator: Open shortcut 4                                                                  |
+| `notebook-navigator:open-shortcut-5`        | Notebook Navigator: Open shortcut 5                                                                  |
+| `notebook-navigator:open-shortcut-6`        | Notebook Navigator: Open shortcut 6                                                                  |
+| `notebook-navigator:open-shortcut-7`        | Notebook Navigator: Open shortcut 7                                                                  |
+| `notebook-navigator:open-shortcut-8`        | Notebook Navigator: Open shortcut 8                                                                  |
+| `notebook-navigator:open-shortcut-9`        | Notebook Navigator: Open shortcut 9                                                                  |
 | `notebook-navigator:search`                 | Notebook Navigator: Search                                                                           |
 | `notebook-navigator:toggle-dual-pane`       | Notebook Navigator: Toggle dual pane layout                                                          |
 | `notebook-navigator:toggle-descendants`     | Notebook Navigator: Toggle descendants                                                               |
@@ -494,11 +504,6 @@ Set custom hotkeys for these commands in Obsidian's Hotkeys settings:
 - **Background color:** Choose background colors for navigation and list panes. `Separate backgrounds`, `Use list background`, `Use navigation background`.
 - **Show tooltips:** Display hover tooltips with additional information for notes and folders.
   - **Show path:** Display the folder path below note names in tooltips.
-
-**Mobile appearance**
-
-- **Zoom level:** Controls the overall zoom level of Notebook Navigator.
-- **Background color:** Choose background colors for navigation and list panes. `Separate backgrounds`, `Use list background`, `Use navigation background`.
 
 **Appearance**
 

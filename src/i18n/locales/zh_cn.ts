@@ -530,6 +530,7 @@ export const STRINGS_ZH_CN = {
         navigateToFolder: '导航到文件夹', // Command palette: Navigate to a folder using fuzzy search (English: Navigate to folder)
         navigateToTag: '导航到标签', // Command palette: Navigate to a tag using fuzzy search (English: Navigate to tag)
         addShortcut: '添加到快捷方式', // Command palette: Adds the current file, folder, or tag to shortcuts (English: Add to shortcuts)
+        openShortcut: '打开快捷方式 {number}',
         toggleDescendants: '切换后代', // Command palette: Toggles showing notes from descendants (English: Toggle descendants)
         toggleHidden: '切换隐藏的文件夹、标签和笔记', // Command palette: Toggles showing hidden items (English: Toggle hidden items)
         toggleTagSort: '切换标签排序', // Command palette: Toggles between alphabetical and frequency tag sorting (English: Toggle tag sort order)
@@ -583,7 +584,6 @@ export const STRINGS_ZH_CN = {
                 behavior: '行为',
                 view: '外观',
                 desktopAppearance: '桌面外观',
-                mobileAppearance: '移动端外观',
                 formatting: '格式'
             },
             navigation: {

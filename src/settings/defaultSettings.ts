@@ -64,8 +64,6 @@ export const DEFAULT_SETTINGS: NotebookNavigatorSettings = {
     desktopBackground: 'separate',
     desktopScale: DEFAULT_UI_SCALE,
 
-    // General tab - Mobile appearance
-    mobileBackground: 'primary',
     mobileScale: DEFAULT_UI_SCALE,
 
     // General tab - Formatting
