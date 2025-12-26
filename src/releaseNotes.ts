@@ -94,7 +94,10 @@ const RELEASE_NOTES: ReleaseNote[] = [
             'Removed the "Reset" button next to the file name and file icon mapping text fields to avoid removing mappings by accident.',
             'Removed the theming variable --nn-theme-mobile-toolbar-border-color since it is no longer used.'
         ],
-        fixed: ['Fixed vertical text alignment in tag pills for certain fonts by adding explicit line-height.']
+        fixed: [
+            'Fixed vertical text alignment in tag pills for certain fonts by adding explicit line-height.',
+            'Fixed "New Tldraw drawing" failing after a Tldraw plugin update.'
+        ]
     },
     {
         version: '1.9.3',
