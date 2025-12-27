@@ -21,8 +21,7 @@ If you love using Notebook Navigator, please consider [☕️ Buying me a coffee
 1. **Install Obsidian** - Download and install from [obsidian.md](https://obsidian.md/)
 2. **Enable community plugins** - Go to Settings → Community plugins → Turn on community plugins
 3. **Install Notebook Navigator** - Click "Browse" → Search for "Notebook Navigator" → Install
-4. **Install Style Settings** - For customizing colors and appearance, install [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin by searching for "Style Settings" in Community plugins
-5. **Install Featured Image (optional)** - For automatic thumbnail generation, install [Featured Image](https://github.com/johansan/obsidian-featured-image) plugin to create optimized thumbnails for all your documents
+4. **Install Style Settings (optional)** - For customizing colors and appearance, install [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin by searching for "Style Settings" in Community plugins
 
 For precise image management, consider also installing [Pixel Perfect Image](https://github.com/johansan/pixel-perfect-image) which lets you resize images to exact pixel dimensions and perform advanced image operations.
 
@@ -898,5 +897,4 @@ Feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/johansan/
 
 ## 12 License
 
-This project is licensed under the GNU General Public License v3.0 (GPL-3.0) - see the [LICENSE](https://github.com/johansan/notebook-navigator/blob/main/LICENSE) file for
-details.
+This project is licensed under the Notebook Navigator License Agreement - see the [LICENSE](https://github.com/johansan/notebook-navigator/blob/main/LICENSE) file for details.
