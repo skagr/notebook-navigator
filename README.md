@@ -890,7 +890,7 @@ Feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/johansan/
 ### 11.6 Featured Image Downloads (Optional)
 
 - **Purpose:** Download remote images and YouTube thumbnails to display as note previews
-- **Enabled by:** "Download remote images" setting (disabled by default)
+- **Enabled by:** "Download remote images" setting (enabled by default)
 - **What is downloaded:** Remote images referenced in note frontmatter and YouTube video thumbnails
 - **When:** Only when enabled and a note references a remote image URL
 - **Storage:** Downloaded images are cached in the local IndexedDB database for offline use
