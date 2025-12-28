@@ -303,8 +303,7 @@ export function StorageProvider({ app, api, children }: StorageProviderProps) {
             }
 
             const baseLabel = strings.settings.items.rebuildCache.progress;
-            const notice = showNotice(`${baseLabel} 0/${total}`, { variant: 'loading', timeout: 0 });
-            cacheRebuildNoticeRef.current = notice;
+            cacheRebuildNoticeRef.current = showNotice(`${baseLabel} 0/${total}`, { variant: 'loading', timeout: 0 });
 
             const db = getDBInstance();
             let hasSeenPending = false;
@@ -316,6 +315,13 @@ export function StorageProvider({ app, api, children }: StorageProviderProps) {
                 if (stoppedRef.current) {
                     clearCacheRebuildNotice();
                     return;
+                }
+
+                let notice = cacheRebuildNoticeRef.current;
+                const container = notice?.containerEl;
+                if (!container || !container.isConnected) {
+                    notice = showNotice(`${baseLabel} 0/${total}`, { variant: 'loading', timeout: 0 });
+                    cacheRebuildNoticeRef.current = notice;
                 }
 
                 const getFileByPath = (path: string): TFile | null => {
@@ -366,12 +372,12 @@ export function StorageProvider({ app, api, children }: StorageProviderProps) {
                         clearCacheRebuildNotice();
                         return;
                     }
-                    notice.setMessage(`${baseLabel} 0/${total}`);
+                    notice?.setMessage(`${baseLabel} 0/${total}`);
                     return;
                 }
 
                 const done = Math.max(0, total - remainingPaths.size);
-                notice.setMessage(`${baseLabel} ${done}/${total}`);
+                notice?.setMessage(`${baseLabel} ${done}/${total}`);
 
                 if (remainingPaths.size === 0) {
                     clearCacheRebuildNotice();
