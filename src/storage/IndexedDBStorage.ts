@@ -8,14 +8,15 @@
 
 import { STORAGE_KEYS } from '../types';
 import { localStorage } from '../utils/localStorage';
-import { FeatureImageBlobCache } from './FeatureImageBlobCache';
+import {
+    DEFAULT_FEATURE_IMAGE_CACHE_MAX,
+    FEATURE_IMAGE_STORE_NAME,
+    FeatureImageBlobStore,
+    computeFeatureImageMutation
+} from './FeatureImageBlobStore';
 import { MemoryFileCache } from './MemoryFileCache';
 
 const STORE_NAME = 'keyvaluepairs';
-// Blob store for feature image thumbnails keyed by file path.
-const FEATURE_IMAGE_STORE_NAME = 'featureImageBlobs';
-// Default in-memory LRU capacity for feature image blobs.
-const DEFAULT_FEATURE_IMAGE_CACHE_MAX = 1000;
 const DB_SCHEMA_VERSION = 2; // IndexedDB structure version
 const DB_CONTENT_VERSION = 1; // Data format version
 
@@ -84,11 +85,6 @@ export interface FileContentChange {
     changeType?: 'metadata' | 'content' | 'both';
 }
 
-interface FeatureImageBlobRecord {
-    featureImageKey: string;
-    blob: Blob;
-}
-
 interface IndexedDBStorageOptions {
     featureImageCacheMaxEntries?: number;
 }
@@ -117,10 +113,8 @@ export class IndexedDBStorage {
     private changeListeners = new Set<(changes: FileContentChange[]) => void>();
     private db: IDBDatabase | null = null;
     private dbName: string;
-    // In-memory LRU for feature image blobs (keyed by file path).
-    private featureImageCache: FeatureImageBlobCache;
-    // Tracks in-flight blob reads to deduplicate concurrent requests.
-    private featureImageBlobInFlight = new Map<string, Promise<Blob | null>>();
+    // Dedicated feature image blob store with an in-memory LRU.
+    private featureImageBlobs: FeatureImageBlobStore;
     private fileChangeListeners = new Map<string, Set<(changes: FileContentChange['changes']) => void>>();
     private initPromise: Promise<void> | null = null;
     private pendingRebuildNotice = false;
@@ -129,7 +123,7 @@ export class IndexedDBStorage {
         this.dbName = `notebooknavigator/cache/${appId}`;
         // Initialize the LRU size from caller options or fallback default.
         const maxEntries = options?.featureImageCacheMaxEntries ?? DEFAULT_FEATURE_IMAGE_CACHE_MAX;
-        this.featureImageCache = new FeatureImageBlobCache(maxEntries);
+        this.featureImageBlobs = new FeatureImageBlobStore(maxEntries);
     }
 
     consumePendingRebuildNotice(): boolean {
@@ -159,68 +153,6 @@ export class IndexedDBStorage {
             featureImageKey,
             metadata: data.metadata && typeof data.metadata === 'object' ? (data.metadata as FileData['metadata']) : null
         };
-    }
-
-    private computeFeatureImageMutation(params: {
-        existingKey: string | null;
-        existingStatus: FeatureImageStatus;
-        featureImageKey?: string | null;
-        featureImage?: Blob | null;
-    }): {
-        nextKey: string | null;
-        nextStatus: FeatureImageStatus;
-        changes: Pick<FileContentChange['changes'], 'featureImageKey' | 'featureImageStatus'>;
-        blobUpdate: FeatureImageBlobRecord | null;
-        shouldDeleteBlob: boolean;
-        shouldClearCache: boolean;
-    } {
-        // Feature images are tracked as:
-        // - Main store: `featureImageKey` + `featureImageStatus` (no blob data)
-        // - Blob store: `{ featureImageKey, blob }` keyed by path
-        //
-        // Normalized rules:
-        // - A non-empty blob requires a non-empty key; otherwise it is dropped.
-        // - Empty blobs are treated as "processed but no thumbnail" and are not persisted.
-        // - Any key change invalidates any stored blob for that path.
-        const changes: Pick<FileContentChange['changes'], 'featureImageKey' | 'featureImageStatus'> = {};
-        let nextKey = params.existingKey;
-        let nextStatus = params.existingStatus;
-        let blobUpdate: FeatureImageBlobRecord | null = null;
-        let shouldDeleteBlob = false;
-        let shouldClearCache = false;
-
-        const featureImageKeyProvided = params.featureImageKey !== undefined;
-        if (featureImageKeyProvided) {
-            const requestedKey = params.featureImageKey ?? null;
-            if (requestedKey !== params.existingKey) {
-                nextKey = requestedKey;
-                nextStatus = nextKey === null ? 'unprocessed' : 'none';
-                changes.featureImageKey = nextKey;
-                changes.featureImageStatus = nextStatus;
-                shouldDeleteBlob = true;
-                shouldClearCache = true;
-            }
-        }
-
-        const featureImageProvided = params.featureImage !== undefined;
-        if (featureImageProvided) {
-            // Any feature image blob update invalidates the in-memory LRU entry for this path.
-            shouldClearCache = true;
-            const blob = params.featureImage;
-            if (blob instanceof Blob && blob.size > 0 && nextKey !== null && nextKey !== '') {
-                blobUpdate = { featureImageKey: nextKey, blob };
-                nextStatus = 'has';
-                changes.featureImageStatus = 'has';
-                shouldDeleteBlob = false;
-            } else {
-                blobUpdate = null;
-                shouldDeleteBlob = true;
-                nextStatus = nextKey === null ? 'unprocessed' : 'none';
-                changes.featureImageStatus = nextStatus;
-            }
-        }
-
-        return { nextKey, nextStatus, changes, blobUpdate, shouldDeleteBlob, shouldClearCache };
     }
 
     /**
@@ -426,8 +358,7 @@ export class IndexedDBStorage {
             request.onsuccess = async () => {
                 this.db = request.result;
                 // Reset blob caches whenever a new database connection is opened.
-                this.featureImageCache.clear();
-                this.featureImageBlobInFlight.clear();
+                this.featureImageBlobs.clearMemoryCaches();
 
                 // Close this connection if a version change is requested elsewhere
                 if (this.db) {
@@ -575,7 +506,7 @@ export class IndexedDBStorage {
             transaction.oncomplete = () => {
                 this.cache.resetToEmpty();
                 // Drop any in-memory blobs after clearing the database.
-                this.featureImageCache.clear();
+                this.featureImageBlobs.clearMemoryCaches();
                 resolve();
             };
             transaction.onabort = () => {
@@ -718,7 +649,7 @@ export class IndexedDBStorage {
             };
             transaction.oncomplete = () => {
                 this.cache.deleteFile(path);
-                this.featureImageCache.delete(path);
+                this.featureImageBlobs.deleteFromCache(path);
                 resolve();
             };
             transaction.onabort = () => {
@@ -870,7 +801,7 @@ export class IndexedDBStorage {
 
             transaction.oncomplete = () => {
                 this.cache.batchDelete(paths);
-                paths.forEach(path => this.featureImageCache.delete(path));
+                paths.forEach(path => this.featureImageBlobs.deleteFromCache(path));
                 resolve();
             };
             transaction.onabort = () => {
@@ -1043,7 +974,7 @@ export class IndexedDBStorage {
                 const existing = this.normalizeFileData(existingRaw);
                 const next: FileData = { ...existing };
 
-                const featureImageMutation = this.computeFeatureImageMutation({
+                const featureImageMutation = computeFeatureImageMutation({
                     existingKey: existing.featureImageKey,
                     existingStatus: existing.featureImageStatus,
                     featureImageKey,
@@ -1153,7 +1084,7 @@ export class IndexedDBStorage {
             this.cache.updateFile(path, updated);
             if (shouldClearFeatureImageCache) {
                 // Remove any cached blob for the updated path.
-                this.featureImageCache.delete(path);
+                this.featureImageBlobs.deleteFromCache(path);
             }
             if (Object.keys(changes).length > 0) {
                 const hasContentChanges =
@@ -1462,7 +1393,7 @@ export class IndexedDBStorage {
         if (updated) {
             this.cache.updateFile(path, updated);
             if (shouldClearFeatureImageCache) {
-                this.featureImageCache.delete(path);
+                this.featureImageBlobs.deleteFromCache(path);
             }
             if (Object.keys(changes).length > 0) {
                 const hasContentCleared =
@@ -1596,7 +1527,7 @@ export class IndexedDBStorage {
                 }
                 if (type === 'featureImage' || type === 'all') {
                     // Reset the in-memory blob cache when all blobs are cleared.
-                    this.featureImageCache.clear();
+                    this.featureImageBlobs.clearMemoryCaches();
                 }
                 resolve();
             };
@@ -1766,7 +1697,7 @@ export class IndexedDBStorage {
         if (type === 'featureImage' || type === 'all') {
             // Drop any cached blobs for the cleared paths.
             for (const path of paths) {
-                this.featureImageCache.delete(path);
+                this.featureImageBlobs.deleteFromCache(path);
             }
         }
     }
@@ -1825,7 +1756,7 @@ export class IndexedDBStorage {
                         changes.preview = update.preview;
                         hasChanges = true;
                     }
-                    const featureImageMutation = this.computeFeatureImageMutation({
+                    const featureImageMutation = computeFeatureImageMutation({
                         existingKey: existing.featureImageKey,
                         existingStatus: existing.featureImageStatus,
                         featureImageKey: update.featureImageKey,
@@ -1946,7 +1877,7 @@ export class IndexedDBStorage {
         }
         if (featureImageCacheUpdates.size > 0) {
             // Drop any cached blobs for updated paths.
-            featureImageCacheUpdates.forEach(path => this.featureImageCache.delete(path));
+            featureImageCacheUpdates.forEach(path => this.featureImageBlobs.deleteFromCache(path));
         }
     }
 
@@ -2029,34 +1960,11 @@ export class IndexedDBStorage {
         if (!expectedKey) {
             return null;
         }
-        // Serve in-memory blobs that already match the requested key.
-        const cached = this.featureImageCache.get(path, expectedKey);
-        if (cached) {
-            return cached;
+        await this.init();
+        if (!this.db) {
+            return null;
         }
-
-        // Reuse any in-flight read for the same path/key pair.
-        const requestKey = `${path}|${expectedKey}`;
-        const inFlight = this.featureImageBlobInFlight.get(requestKey);
-        if (inFlight) {
-            return inFlight;
-        }
-
-        // Read from IndexedDB and populate the LRU when the key matches.
-        const request = this.readFeatureImageBlobFromStore(path, expectedKey)
-            .then(blob => {
-                if (blob) {
-                    this.featureImageCache.set(path, { featureImageKey: expectedKey, blob });
-                }
-                return blob;
-            })
-            .finally(() => {
-                // Remove the in-flight marker when the request finishes.
-                this.featureImageBlobInFlight.delete(requestKey);
-            });
-
-        this.featureImageBlobInFlight.set(requestKey, request);
-        return request;
+        return this.featureImageBlobs.getBlob(this.db, path, expectedKey);
     }
 
     /**
@@ -2068,67 +1976,7 @@ export class IndexedDBStorage {
         if (!this.db) {
             return;
         }
-
-        const transaction = this.db.transaction([FEATURE_IMAGE_STORE_NAME], 'readonly');
-        const store = transaction.objectStore(FEATURE_IMAGE_STORE_NAME);
-        const op = 'forEachFeatureImageBlobRecord';
-        let lastRequestError: DOMException | Error | null = null;
-
-        await new Promise<void>((resolve, reject) => {
-            const request = store.openCursor();
-            request.onsuccess = () => {
-                const cursor = request.result;
-                if (!cursor) {
-                    return;
-                }
-
-                if (typeof cursor.key !== 'string') {
-                    cursor.continue();
-                    return;
-                }
-
-                const path = cursor.key;
-                const record = cursor.value as FeatureImageBlobRecord | undefined;
-                if (record && typeof record.featureImageKey === 'string' && record.blob instanceof Blob && record.blob.size > 0) {
-                    try {
-                        callback(path, record);
-                    } catch (error: unknown) {
-                        console.error('[IndexedDB] callback failed', { store: FEATURE_IMAGE_STORE_NAME, op, path, error });
-                    }
-                }
-
-                cursor.continue();
-            };
-            request.onerror = () => {
-                lastRequestError = request.error || null;
-                console.error('[IndexedDB] openCursor failed', {
-                    store: FEATURE_IMAGE_STORE_NAME,
-                    op,
-                    name: request.error?.name,
-                    message: request.error?.message
-                });
-                reject(this.normalizeIdbError(request.error, 'Cursor request failed'));
-            };
-            transaction.oncomplete = () => resolve();
-            transaction.onabort = () => {
-                console.error('[IndexedDB] transaction aborted', {
-                    store: FEATURE_IMAGE_STORE_NAME,
-                    op,
-                    txError: transaction.error?.message,
-                    reqError: lastRequestError?.message
-                });
-                this.rejectWithTransactionError(reject, transaction, lastRequestError, 'Transaction aborted');
-            };
-            transaction.onerror = () => {
-                console.error('[IndexedDB] transaction error', {
-                    store: FEATURE_IMAGE_STORE_NAME,
-                    op,
-                    txError: transaction.error?.message,
-                    reqError: lastRequestError?.message
-                });
-                this.rejectWithTransactionError(reject, transaction, lastRequestError, 'Transaction error');
-            };
-        });
+        await this.featureImageBlobs.forEachBlobRecord(this.db, callback);
     }
 
     /**
@@ -2137,89 +1985,7 @@ export class IndexedDBStorage {
     async moveFeatureImageBlob(oldPath: string, newPath: string): Promise<void> {
         await this.init();
         if (!this.db) throw new Error('Database not initialized');
-
-        const transaction = this.db.transaction([FEATURE_IMAGE_STORE_NAME], 'readwrite');
-        const store = transaction.objectStore(FEATURE_IMAGE_STORE_NAME);
-        let hasRecord = false;
-        const op = 'moveFeatureImageBlob';
-        let lastRequestError: DOMException | Error | null = null;
-
-        return new Promise((resolve, reject) => {
-            const getReq = store.get(oldPath);
-            getReq.onsuccess = () => {
-                const record = getReq.result as FeatureImageBlobRecord | undefined;
-                if (!record) {
-                    return;
-                }
-                hasRecord = true;
-                // Copy the blob record to the new path and delete the old entry.
-                const putReq = store.put(record, newPath);
-                putReq.onerror = () => {
-                    lastRequestError = putReq.error || null;
-                    console.error('[IndexedDB] put failed', {
-                        store: FEATURE_IMAGE_STORE_NAME,
-                        op,
-                        path: newPath,
-                        name: putReq.error?.name,
-                        message: putReq.error?.message
-                    });
-                };
-                const deleteReq = store.delete(oldPath);
-                deleteReq.onerror = () => {
-                    lastRequestError = deleteReq.error || null;
-                    console.error('[IndexedDB] delete failed', {
-                        store: FEATURE_IMAGE_STORE_NAME,
-                        op,
-                        path: oldPath,
-                        name: deleteReq.error?.name,
-                        message: deleteReq.error?.message
-                    });
-                };
-            };
-            getReq.onerror = () => {
-                lastRequestError = getReq.error || null;
-                console.error('[IndexedDB] get failed', {
-                    store: FEATURE_IMAGE_STORE_NAME,
-                    op,
-                    path: oldPath,
-                    name: getReq.error?.name,
-                    message: getReq.error?.message
-                });
-                try {
-                    transaction.abort();
-                } catch (e) {
-                    void e;
-                }
-            };
-            transaction.oncomplete = () => {
-                if (hasRecord) {
-                    // Mirror the path move in the in-memory LRU.
-                    this.featureImageCache.move(oldPath, newPath);
-                } else {
-                    // Drop any cached entry if there was no blob record.
-                    this.featureImageCache.delete(oldPath);
-                }
-                resolve();
-            };
-            transaction.onabort = () => {
-                console.error('[IndexedDB] transaction aborted', {
-                    store: FEATURE_IMAGE_STORE_NAME,
-                    op,
-                    txError: transaction.error?.message,
-                    reqError: lastRequestError?.message
-                });
-                this.rejectWithTransactionError(reject, transaction, lastRequestError, 'Transaction aborted');
-            };
-            transaction.onerror = () => {
-                console.error('[IndexedDB] transaction error', {
-                    store: FEATURE_IMAGE_STORE_NAME,
-                    op,
-                    txError: transaction.error?.message,
-                    reqError: lastRequestError?.message
-                });
-                this.rejectWithTransactionError(reject, transaction, lastRequestError, 'Transaction error');
-            };
-        });
+        await this.featureImageBlobs.moveBlob(this.db, oldPath, newPath);
     }
 
     /**
@@ -2228,82 +1994,7 @@ export class IndexedDBStorage {
     async deleteFeatureImageBlob(path: string): Promise<void> {
         await this.init();
         if (!this.db) throw new Error('Database not initialized');
-
-        const transaction = this.db.transaction([FEATURE_IMAGE_STORE_NAME], 'readwrite');
-        const store = transaction.objectStore(FEATURE_IMAGE_STORE_NAME);
-        const op = 'deleteFeatureImageBlob';
-        let lastRequestError: DOMException | Error | null = null;
-
-        return new Promise((resolve, reject) => {
-            // Remove the blob record and clear the in-memory cache entry.
-            const deleteReq = store.delete(path);
-            deleteReq.onerror = () => {
-                lastRequestError = deleteReq.error || null;
-                console.error('[IndexedDB] delete failed', {
-                    store: FEATURE_IMAGE_STORE_NAME,
-                    op,
-                    path,
-                    name: deleteReq.error?.name,
-                    message: deleteReq.error?.message
-                });
-            };
-            transaction.oncomplete = () => {
-                this.featureImageCache.delete(path);
-                resolve();
-            };
-            transaction.onabort = () => {
-                console.error('[IndexedDB] transaction aborted', {
-                    store: FEATURE_IMAGE_STORE_NAME,
-                    op,
-                    txError: transaction.error?.message,
-                    reqError: lastRequestError?.message
-                });
-                this.rejectWithTransactionError(reject, transaction, lastRequestError, 'Transaction aborted');
-            };
-            transaction.onerror = () => {
-                console.error('[IndexedDB] transaction error', {
-                    store: FEATURE_IMAGE_STORE_NAME,
-                    op,
-                    txError: transaction.error?.message,
-                    reqError: lastRequestError?.message
-                });
-                this.rejectWithTransactionError(reject, transaction, lastRequestError, 'Transaction error');
-            };
-        });
-    }
-
-    private async readFeatureImageBlobFromStore(path: string, expectedKey: string): Promise<Blob | null> {
-        await this.init();
-        if (!this.db) {
-            return null;
-        }
-
-        const transaction = this.db.transaction([FEATURE_IMAGE_STORE_NAME], 'readonly');
-        const store = transaction.objectStore(FEATURE_IMAGE_STORE_NAME);
-        const op = 'getFeatureImageBlob';
-
-        return new Promise(resolve => {
-            const request = store.get(path);
-            request.onsuccess = () => {
-                const record = request.result as FeatureImageBlobRecord | undefined;
-                // Ignore blobs when the stored key does not match or the blob is empty.
-                if (!record || record.featureImageKey !== expectedKey || !(record.blob instanceof Blob) || record.blob.size === 0) {
-                    resolve(null);
-                    return;
-                }
-                resolve(record.blob);
-            };
-            request.onerror = () => {
-                console.error('[IndexedDB] get failed', {
-                    store: FEATURE_IMAGE_STORE_NAME,
-                    op,
-                    path,
-                    name: request.error?.name,
-                    message: request.error?.message
-                });
-                resolve(null);
-            };
-        });
+        await this.featureImageBlobs.deleteBlob(this.db, path);
     }
 
     /**
@@ -2317,7 +2008,6 @@ export class IndexedDBStorage {
         }
         this.initPromise = null;
         this.cache.clear();
-        this.featureImageCache.clear();
-        this.featureImageBlobInFlight.clear();
+        this.featureImageBlobs.clearMemoryCaches();
     }
 }

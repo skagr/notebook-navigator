@@ -111,6 +111,7 @@ export abstract class BaseContentProvider implements IContentProvider {
 
         if (this.queueDebounceTimer !== null) {
             window.clearTimeout(this.queueDebounceTimer);
+            this.queueDebounceTimer = null;
         }
 
         this.queueDebounceTimer = window.setTimeout(() => {
