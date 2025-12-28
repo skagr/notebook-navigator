@@ -207,18 +207,52 @@ export async function renderPdfCoverThumbnail(app: App, pdfFile: TFile, options:
         const worker = await getSharedWorkerInstance(pdfjs);
 
         const url = app.vault.getResourcePath(pdfFile);
+        /**
+         * pdf.js `getDocument()` supports streaming and auto-fetching additional data/pages.
+         * This code path renders page 1 only.
+         *
+         * `disableAutoFetch` prevents pdf.js from prefetching data for pages not explicitly requested.
+         * `disableStream` disables progressive range streaming; pdf.js documents `disableStream` as required
+         * for `disableAutoFetch` to fully take effect.
+         *
+         * Crash notes (mobile / iOS):
+         * - Symptom: Obsidian crashes/reloads during cache rebuild when PDF cover thumbnails are being generated.
+         * - Reproduction: Trigger cache rebuild with PDFs present in the vault (example file: `_resources/unknown_filename-73467029.pdf`).
+         * - Crash location: The last observable step before reload is calling `page.render(...)` and awaiting `renderTask.promise`.
+         *   - There is no caught exception and no promise rejection before the reload.
+         *   - This is consistent with a WebView-level crash during rendering work (no JavaScript error to catch).
+         *
+         * What the flags change:
+         * - `disableAutoFetch: true` stops pdf.js from prefetching additional data/pages beyond what is explicitly requested.
+         * - `disableStream: true` disables streaming/range loading; pdf.js documents this as required for `disableAutoFetch`
+         *   to take full effect.
+         *
+         * Why we set them:
+         * - This plugin only needs page 1 to render a cover thumbnail.
+         * - With streaming/auto-fetch enabled, pdf.js may perform background fetch work that is not used by this path.
+         * - During cache rebuild, the plugin renders many PDFs back-to-back; disabling this behavior narrows the pdf.js work
+         *   to the explicitly requested page and matches the observed configuration that avoids iOS reloads.
+         *
+         * Scope:
+         * - Applied on all platforms for consistent pdf.js behavior in this "page 1 only" thumbnail pipeline.
+         */
+        const documentParams: Record<string, unknown> = {
+            disableAutoFetch: true,
+            disableStream: true,
+            ...(worker ? { worker } : {})
+        };
 
         try {
             const task = (pdfjs as { getDocument: (params: Record<string, unknown>) => { promise: Promise<unknown> } }).getDocument({
                 url,
-                ...(worker ? { worker } : {})
+                ...documentParams
             });
             doc = (await task.promise) as { getPage: (pageNumber: number) => Promise<unknown>; destroy?: () => void };
         } catch {
             const buffer = await app.vault.adapter.readBinary(pdfFile.path);
             const task = (pdfjs as { getDocument: (params: Record<string, unknown>) => { promise: Promise<unknown> } }).getDocument({
                 data: buffer,
-                ...(worker ? { worker } : {})
+                ...documentParams
             });
             doc = (await task.promise) as { getPage: (pageNumber: number) => Promise<unknown>; destroy?: () => void };
         }
