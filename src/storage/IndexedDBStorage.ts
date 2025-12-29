@@ -435,32 +435,60 @@ export class IndexedDBStorage {
                     this.cache.resetToEmpty();
                 } else {
                     try {
-                        // Use cursor streaming to avoid materializing duplicate arrays in memory
                         const transaction = this.db.transaction([STORE_NAME], 'readonly');
                         const store = transaction.objectStore(STORE_NAME);
 
                         this.cache.clear();
 
-                        await new Promise<void>((resolveCursor, rejectCursor) => {
-                            const cursorRequest = store.openCursor();
+                        // Wrap an IndexedDB request in a promise so it can be awaited.
+                        const requestToPromise = <T>(request: IDBRequest<T>, fallbackMessage: string): Promise<T> =>
+                            new Promise((resolveRequest, rejectRequest) => {
+                                request.onsuccess = () => resolveRequest(request.result);
+                                request.onerror = () => rejectRequest(this.normalizeIdbError(request.error, fallbackMessage));
+                            });
 
-                            cursorRequest.onsuccess = () => {
-                                const cursor = cursorRequest.result;
-                                if (!cursor) {
-                                    resolveCursor();
-                                    return;
+                        // Bulk-load the store to avoid per-row cursor callbacks.
+                        // Use batching to limit peak memory usage on large vaults.
+                        const batchSize = 5000;
+                        // Tracks the last key in the previous batch so the next query can resume after it.
+                        let lastKey: IDBValidKey | null = null;
+
+                        while (true) {
+                            // When resuming, start strictly after the last key we processed.
+                            const range = lastKey === null ? undefined : IDBKeyRange.lowerBound(lastKey, true);
+
+                            // Fetch keys and values for the same range/count so indexes line up.
+                            const keysRequest = store.getAllKeys(range, batchSize);
+                            const valuesRequest = store.getAll(range, batchSize) as IDBRequest<Partial<FileData>[]>;
+                            const [keys, values] = await Promise.all([
+                                requestToPromise(keysRequest, 'getAllKeys failed'),
+                                requestToPromise(valuesRequest, 'getAll failed')
+                            ]);
+
+                            if (keys.length === 0) {
+                                break;
+                            }
+
+                            // Apply each row directly into the in-memory cache.
+                            for (let index = 0; index < keys.length; index += 1) {
+                                const key = keys[index];
+                                if (typeof key !== 'string') {
+                                    continue;
                                 }
+                                const value = values[index];
+                                if (!value) {
+                                    continue;
+                                }
+                                this.cache.updateFile(key, this.normalizeFileData(value));
+                            }
 
-                                // Stream each file directly into the cache without intermediate storage
-                                const path = cursor.key as string;
-                                this.cache.updateFile(path, this.normalizeFileData(cursor.value as Partial<FileData>));
-                                cursor.continue();
-                            };
-
-                            cursorRequest.onerror = () => {
-                                rejectCursor(this.normalizeIdbError(cursorRequest.error, 'Cursor iteration failed'));
-                            };
-                        });
+                            // Continue from the last key returned in this batch.
+                            lastKey = keys[keys.length - 1];
+                            // If IndexedDB returned fewer than the requested count, there are no more rows.
+                            if (keys.length < batchSize) {
+                                break;
+                            }
+                        }
 
                         // All data loaded, mark cache as ready.
                         this.cache.markInitialized();
