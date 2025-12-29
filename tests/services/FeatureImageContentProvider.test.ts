@@ -375,6 +375,41 @@ describe('FeatureImageContentProvider scanning', () => {
         }
     });
 
+    it('preserves query params in frontmatter external URLs while stripping the hash', () => {
+        const { app } = createApp();
+        const provider = new TestFeatureImageContentProvider(app);
+        const settings = createSettings({ downloadExternalFeatureImages: true });
+        const noteFile = createFile('notes/note.md');
+
+        const metadata: CachedMetadata = {
+            frontmatter: {
+                thumbnail: 'https://example.com/cover.jpg?width=800&sig=%2Babc#frag'
+            }
+        };
+
+        const result = provider.getFrontmatterReference(noteFile, metadata, settings);
+
+        expect(result?.kind).toBe('external');
+        if (result?.kind === 'external') {
+            expect(result.url).toBe('https://example.com/cover.jpg?width=800&sig=%2Babc');
+        }
+    });
+
+    it('preserves encoded query params in markdown external URLs while stripping the hash', () => {
+        const { app } = createApp();
+        const provider = new TestFeatureImageContentProvider(app);
+        const settings = createSettings({ downloadExternalFeatureImages: true });
+        const noteFile = createFile('notes/note.md');
+
+        const content = '![](https://example.com/cover.jpg?width=800&sig=%2Babc#frag)';
+        const result = provider.getDocumentReference(content, noteFile, settings);
+
+        expect(result?.kind).toBe('external');
+        if (result?.kind === 'external') {
+            expect(result.url).toBe('https://example.com/cover.jpg?width=800&sig=%2Babc');
+        }
+    });
+
     it('includes source mtime in local image cache keys', () => {
         const { app } = createApp();
         const provider = new TestFeatureImageContentProvider(app);

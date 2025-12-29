@@ -73,7 +73,8 @@ export class WorkspaceLeaf {}
 
 export const Platform = {
     isDesktopApp: true,
-    isMobile: false
+    isMobile: false,
+    isIosApp: false
 };
 
 export const normalizePath = (value: string) => value;

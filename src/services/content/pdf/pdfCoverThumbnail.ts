@@ -26,6 +26,20 @@ type PdfWorker = Record<string, unknown>;
 // Viewport dimensions returned by pdf.js
 type PdfViewport = { width: number; height: number };
 
+// Document loading task returned by pdf.js `getDocument()`
+type PdfDocumentLoadingTask = { promise: Promise<unknown> };
+
+// Minimal interface for a pdf.js library object
+type PdfJsLibrary = {
+    getDocument: (params: Record<string, unknown>) => PdfDocumentLoadingTask;
+};
+
+// Minimal interface for a pdf.js document object
+type PdfDocument = {
+    getPage: (pageNumber: number) => Promise<unknown>;
+    destroy?: () => void;
+};
+
 // Render task returned by pdf.js page.render()
 type PdfRenderTask = { promise: Promise<void> };
 
@@ -45,6 +59,7 @@ const MAX_PDF_THUMBNAIL_BYTES = 25 * 1024 * 1024;
 
 // Shared pdf.js worker instance reused across renders
 let sharedWorker: PdfWorker | null = null;
+let sharedWorkerVerbosityLevel: number | null = null;
 // Timer ID for destroying the worker after idle timeout
 let workerIdleTimerId: number | null = null;
 
@@ -97,6 +112,7 @@ function destroySharedWorker(): void {
 
     const worker = sharedWorker;
     sharedWorker = null;
+    sharedWorkerVerbosityLevel = null;
 
     if (worker === null) {
         return;
@@ -105,36 +121,103 @@ function destroySharedWorker(): void {
     const destroy = worker['destroy'];
     if (typeof destroy === 'function') {
         try {
-            (destroy as () => void)();
+            destroy.call(worker);
         } catch {
             // ignore
         }
     }
 }
 
+function isPromiseLike(value: unknown): value is Promise<unknown> {
+    if (!isRecord(value)) {
+        return false;
+    }
+    return typeof value['then'] === 'function';
+}
+
+function isPdfDocumentLoadingTask(value: unknown): value is PdfDocumentLoadingTask {
+    if (!isRecord(value)) {
+        return false;
+    }
+    return isPromiseLike(value['promise']);
+}
+
+function isPdfJsLibrary(value: unknown): value is PdfJsLibrary {
+    if (!isRecord(value)) {
+        return false;
+    }
+
+    const getDocument = value['getDocument'];
+    return typeof getDocument === 'function';
+}
+
+function isPdfDocument(value: unknown): value is PdfDocument {
+    if (!isRecord(value)) {
+        return false;
+    }
+
+    const getPage = value['getPage'];
+    return typeof getPage === 'function';
+}
+
+function getPdfJsErrorsVerbosityLevel(pdfjs: unknown): number | null {
+    if (!isRecord(pdfjs)) {
+        return null;
+    }
+
+    const verbosityLevel = pdfjs['VerbosityLevel'];
+    if (isRecord(verbosityLevel)) {
+        const errors = verbosityLevel['ERRORS'];
+        if (typeof errors === 'number') {
+            return errors;
+        }
+    }
+
+    // pdf.js uses 0 for "errors only" verbosity level.
+    return 0;
+}
+
+type PdfWorkerConstructor = new (params?: Record<string, unknown>) => unknown;
+
+function isIndexable(value: unknown): value is Record<string, unknown> {
+    return (typeof value === 'object' && value !== null) || typeof value === 'function';
+}
+
+function hasFunctionProperty<K extends string>(
+    value: unknown,
+    key: K
+): value is Record<string, unknown> & Record<K, (...args: unknown[]) => unknown> {
+    if (!isIndexable(value)) {
+        return false;
+    }
+    return typeof value[key] === 'function';
+}
+
+function isPdfWorkerConstructor(value: unknown): value is PdfWorkerConstructor {
+    return typeof value === 'function';
+}
+
 // Attempts to create a pdf.js worker using the PDFWorker API
-function tryCreateWorker(pdfjs: unknown): PdfWorker | null {
+function tryCreateWorker(pdfjs: unknown, verbosityLevel: number | null): PdfWorker | null {
     if (!isRecord(pdfjs)) {
         return null;
     }
 
     const pdfWorker = pdfjs['PDFWorker'];
+    const workerParams: Record<string, unknown> = typeof verbosityLevel === 'number' ? { verbosity: verbosityLevel } : {};
 
-    if (isRecord(pdfWorker)) {
-        const create = pdfWorker['create'];
-        if (typeof create === 'function') {
-            try {
-                const worker = (create as (params: Record<string, unknown>) => unknown)({});
-                return isRecord(worker) ? worker : null;
-            } catch {
-                return null;
-            }
+    if (hasFunctionProperty(pdfWorker, 'create')) {
+        try {
+            const worker = pdfWorker.create(workerParams);
+            return isRecord(worker) ? worker : null;
+        } catch {
+            return null;
         }
     }
 
-    if (typeof pdfWorker === 'function') {
+    if (isPdfWorkerConstructor(pdfWorker)) {
         try {
-            const worker = new (pdfWorker as new (params?: Record<string, unknown>) => unknown)({});
+            const worker = new pdfWorker(workerParams);
             return isRecord(worker) ? worker : null;
         } catch {
             return null;
@@ -145,18 +228,23 @@ function tryCreateWorker(pdfjs: unknown): PdfWorker | null {
 }
 
 // Returns the shared worker instance, creating it if necessary
-async function getSharedWorkerInstance(pdfjs: unknown): Promise<PdfWorker | null> {
+async function getSharedWorkerInstance(pdfjs: unknown, verbosityLevel: number | null): Promise<PdfWorker | null> {
     if (sharedWorker) {
-        touchWorkerIdleTimer();
-        return sharedWorker;
+        if (sharedWorkerVerbosityLevel === verbosityLevel) {
+            touchWorkerIdleTimer();
+            return sharedWorker;
+        }
+
+        destroySharedWorker();
     }
 
-    const worker = tryCreateWorker(pdfjs);
+    const worker = tryCreateWorker(pdfjs, verbosityLevel);
     if (!worker) {
         return null;
     }
 
     sharedWorker = worker;
+    sharedWorkerVerbosityLevel = verbosityLevel;
     touchWorkerIdleTimer();
     return worker;
 }
@@ -199,12 +287,17 @@ export async function renderPdfCoverThumbnail(app: App, pdfFile: TFile, options:
     clearWorkerIdleTimer();
     const release = await renderLimiter.acquire();
 
-    let doc: { getPage: (pageNumber: number) => Promise<unknown>; destroy?: () => void } | null = null;
-    let page: { cleanup?: () => void } | null = null;
+    let doc: PdfDocument | null = null;
+    let page: PdfPage | null = null;
 
     try {
         const pdfjs: unknown = await loadPdfJs();
-        const worker = await getSharedWorkerInstance(pdfjs);
+        const errorsVerbosityLevel = getPdfJsErrorsVerbosityLevel(pdfjs);
+        const worker = await getSharedWorkerInstance(pdfjs, errorsVerbosityLevel);
+
+        if (!isPdfJsLibrary(pdfjs)) {
+            return null;
+        }
 
         const url = app.vault.getResourcePath(pdfFile);
         /**
@@ -239,22 +332,39 @@ export async function renderPdfCoverThumbnail(app: App, pdfFile: TFile, options:
         const documentParams: Record<string, unknown> = {
             disableAutoFetch: true,
             disableStream: true,
+            ...(typeof errorsVerbosityLevel === 'number' ? { verbosity: errorsVerbosityLevel } : {}),
             ...(worker ? { worker } : {})
         };
 
         try {
-            const task = (pdfjs as { getDocument: (params: Record<string, unknown>) => { promise: Promise<unknown> } }).getDocument({
+            const task = pdfjs.getDocument({
                 url,
                 ...documentParams
             });
-            doc = (await task.promise) as { getPage: (pageNumber: number) => Promise<unknown>; destroy?: () => void };
+            if (!isPdfDocumentLoadingTask(task)) {
+                return null;
+            }
+
+            const loadedDoc = await task.promise;
+            if (!isPdfDocument(loadedDoc)) {
+                return null;
+            }
+            doc = loadedDoc;
         } catch {
             const buffer = await app.vault.adapter.readBinary(pdfFile.path);
-            const task = (pdfjs as { getDocument: (params: Record<string, unknown>) => { promise: Promise<unknown> } }).getDocument({
+            const task = pdfjs.getDocument({
                 data: buffer,
                 ...documentParams
             });
-            doc = (await task.promise) as { getPage: (pageNumber: number) => Promise<unknown>; destroy?: () => void };
+            if (!isPdfDocumentLoadingTask(task)) {
+                return null;
+            }
+
+            const loadedDoc = await task.promise;
+            if (!isPdfDocument(loadedDoc)) {
+                return null;
+            }
+            doc = loadedDoc;
         }
 
         const firstPage = await doc.getPage(1);
