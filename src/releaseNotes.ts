@@ -65,6 +65,21 @@ export interface ReleaseNote {
  */
 const RELEASE_NOTES: ReleaseNote[] = [
     {
+        version: '2.0.1',
+        date: '2025-12-29',
+        showOnUpdate: true,
+        new: [
+        ],
+        improved: [
+        ],
+        changed: [
+        ],
+        fixed: [
+            'Fixed **Style settings** not working due to misaligned CSS variable names.',
+            '**Navigation Pane > Appearance > Root item spacing** now properly updates the view when changed.'
+        ]
+    },
+    {
         version: '2.0.0',
         date: '2025-12-28',
         showOnUpdate: true,
