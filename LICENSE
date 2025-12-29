@@ -1,105 +1,127 @@
 Notebook Navigator License Agreement
-Version 1.1
+Version 1.2
 
-Copyright (c) 2025-2026 Johan Sanneblad
-All rights reserved.
+Copyright © 2025 Johan Sanneblad. All rights reserved.
 
-"Notebook Navigator" is a trademark of Johan Sanneblad.
+“Notebook Navigator” is a trademark of Johan Sanneblad. This License permits limited use of that name only as stated below and does not grant rights to use any logos or other trademarks.
 
-By using, copying, modifying, publishing source, or otherwise interacting with the Software, you agree to this License Agreement.
+Quick FAQ (non-binding summary)
 
-1. Definitions
+Can I use and modify this plugin? Yes, including internal business use.
+Can I publish a fork’s source code? Yes, if it is clearly unofficial and includes this license.
+Can others install a fork? Yes, for free, for example via BRAT or by building from source.
+Can I share installable builds outside the Obsidian Community Plugins directory? Yes, for free, if you follow the fork rules.
+Can I submit (publish) a fork to the Obsidian Community Plugins directory? No, while the official plugin is Actively Maintained.
+If the official plugin is abandoned (no Official Release for 12 months), can a fork be listed? Yes, a free continuation fork may be listed under Section 6.
+Can I sell the plugin or paywall access to it? No, not without written permission.
 
-1.1 "Software" means the Notebook Navigator plugin, including its source code, documentation, and any associated files made available by the Licensor under this License Agreement.
+This FAQ is for convenience only. The license terms below are legally binding.
 
-1.2 "Licensor" means Johan Sanneblad.
+1.Definitions
 
-1.3 "You" means the individual or legal entity exercising rights under this License Agreement.
+1.1 “Software” means the Notebook Navigator plugin, including its source code, documentation, and associated files made available by the Licensor.
+1.2 “Licensor” means Johan Sanneblad.
+1.3 “Official Repository” means the repository designated by the Licensor as official, currently https://github.com/johansan/notebook-navigator (and any successor designated by prominent notice in the README and/or an Official Release).
+1.4 “Official Release” means a versioned, public release published from the Official Repository (for example a Git tag and/or GitHub Release corresponding to a plugin version).
+1.5 “Actively Maintained” means at least one Official Release has been published within the last twelve (12) months.
+1.6 “Fork” means any repository or distribution that copies, modifies, or is derived from the Software.
+1.7 “Obsidian Directory” means the official Obsidian Community Plugins directory (and any official successor listing).
+1.7a “Submit for inclusion” means to propose a plugin for addition to the Obsidian Directory under the Directory’s normal submission process (for example by opening a submission or pull request).
+1.8 “Plugin ID” means the id value in manifest.json (and the corresponding folder name used by Obsidian).
+1.9 “Installable Files” means the files needed to install the plugin (typically manifest.json and main.js, and optionally styles.css), whether separate or packaged.
+1.10 “Free of charge" means no payment is required to obtain, access, install, or use the Software or a Fork, including through bundling or any indirect fee that is a condition of access. Charging for unrelated products or services is allowed if access to the Software or Fork remains Free of charge.
 
-1.4 "Organization" means You and Your employees and contractors acting on Your behalf, solely for Your internal business purposes.
+2.Acceptance
 
-1.5 "Internal Use" means use of the Software within Your Organization, including commercial use, where the Software (or any Derivative Work) is not made available to any person or entity outside the Organization.
+By using, copying, modifying, or sharing the Software, you agree to this License.
 
-1.6 "Personal Use" means use of the Software by an individual for personal, non-Organization purposes.
+3.License grant
 
-1.7 "Derivative Work" means any modification of, or work based on, the Software.
+Subject to this License, you may use, copy, and modify the Software for any purpose, including internal commercial use within your organization. This license is non-exclusive, worldwide, and royalty-free.
 
-1.8 "Publish Source" means to make the Software's source code (or source code of a Derivative Work) available in a public repository for viewing and collaboration, excluding any Installable Form.
+4.Forks and free sharing (allowed)
 
-1.9 "Installable Form" means any compiled, bundled, packaged, or ready-to-run form of the Software or a Derivative Work, including, without limitation:
-(a) Obsidian plugin release assets and files such as `main.js`, `manifest.json`, and `styles.css`;
-(b) any zip, tar, or similar archives intended for installation;
-(c) any GitHub Releases assets;
-(d) any binaries, bundles, or build outputs intended for third-party installation;
-(e) any upload to a package registry or app/plugin store (including npm or similar registries) that enables third parties to install the Software or a Derivative Work.
+You may create Forks and share the Software or modified versions Free of charge (including publicly on GitHub), including sharing Installable Files, provided you follow all rules below.
 
-1.10 "Distribute" means to provide, convey, publish, or make available the Software or any Derivative Work in Installable Form to any third party outside Your Organization. For clarity, Publish Source as permitted by Section 3 is not Distribution.
+4.1 Include an unmodified copy of this License in your Fork (for example as LICENSE).
+4.2 Do not remove or alter copyright, attribution, or license notices.
 
-1.11 "Fork" means a copy of the Software repository made in a version control system.
+4.3 Unofficial labeling (required)
+Your Fork must be clearly marked as unofficial and not endorsed by the Licensor. Minimum requirements:
+a) The repository name OR the top of the README includes “Unofficial”, “Fork”, or “Community Continuation”, and
+b) The README states near the top: “Unofficial fork. Not endorsed by Johan Sanneblad.” (or equivalent), and
+c) If your Fork is intended for others to install, the plugin display name (name in manifest.json) must include “Unofficial” or an equivalent qualifier.
 
-1.12 "Obsidian Plugin Directory" means the Obsidian Community Plugins directory and any official listings used by Obsidian to index and install community plugins.
+4.4 Trademarks and branding
+a) You may use the words “Notebook Navigator” only to truthfully state that your Fork is based on the Software (for example “Unofficial fork of Notebook Navigator”).
+b) You must not use the Licensor’s logo or other trademarks as your Fork’s branding, and you must not imply endorsement or that your Fork is official.
 
-1.13 "Official Release Assets" means Installable Form published by the Licensor for the unmodified Software, including the release assets intended to be installed by end users.
+4.5 Plugin ID (avoid collisions and confusion)
+Any Fork that is shared publicly must use a different Plugin ID than the official Software. Keeping the original Plugin ID is permitted only for private, non-shared forks or for an officially transferred Obsidian Directory listing.
 
-2. License Grant
+4.6 License with downloads
+If you share Installable Files as a download (zip, release assets, direct files), you must include this License with the download or provide a clear link next to the download to where this License can be read.
 
-2.1 Subject to the restrictions in this License Agreement, the Licensor grants You a non-exclusive, worldwide, royalty-free license to:
-(a) use the Software for any purpose, including commercial purposes, as Internal Use or Personal Use;
-(b) copy the Software as needed for Internal Use or Personal Use;
-(c) modify the Software and create Derivative Works for Internal Use or Personal Use.
+5.No Obsidian Directory submission while Actively Maintained
 
-2.2 You may share copies of the Software and Derivative Works within Your Organization as needed for Internal Use.
+5.1 While the Software is Actively Maintained, you must not submit any Fork or derivative of the Software for inclusion as a listing in the Obsidian Directory.
+5.2 This does not prevent an official transfer of the existing Obsidian Directory listing through the Directory’s normal process.
+5.3 This License does not override Obsidian’s own directory rules and does not guarantee acceptance of any submission.
 
-3. Public Forks and Source Publication (Permitted)
+6.Abandoned plugin policy (12-month lapse)
 
-3.1 You may create and host public Forks and Publish Source of the Software and Derivative Works for Personal Use or Internal Use, provided that:
-(a) the repository includes an unmodified copy of this License Agreement; and
-(b) you do not Distribute the Software or any Derivative Work in Installable Form to any third party.
+6.1 If no Official Release has been published for twelve (12) consecutive months, then a Fork may be listed in the Obsidian Directory only if all conditions below are met:
+a) It is Free of charge.
+b) It is clearly labeled as unofficial and not endorsed (Section 4.3).
+c) It does not use the Licensor’s trademarks as branding and does not imply endorsement (Section 4.4).
+d) It includes an unmodified copy of this License.
+e) It prominently credits Johan Sanneblad as the original author in the README and in the Obsidian Directory listing description.
+f) Its Obsidian Directory listing title clearly indicates it is unofficial (for example includes “Unofficial” or “Community Continuation”) and is not exactly “Notebook Navigator”.
 
-3.2 Developer build documentation is permitted. For clarity, documentation describing how to build from source is allowed, including in a public repository. However, you may not provide prebuilt artifacts, installation packages, or other Installable Form to third parties.
+6.2 Plugin ID for Obsidian Directory listings after a lapse
+a) A continuation fork should use a new Plugin ID.
+b) Reusing the original Plugin ID is allowed only if the Obsidian Directory listing has been officially transferred or updated through the Directory’s normal process.
 
-3.3 Trademark and naming. Any public Fork must not use the "Notebook Navigator" name, logo, or trademark in a way that suggests it is the original or endorsed by the Licensor. You must clearly indicate that the Fork is a fork and not the official version.
+6.3 If the Licensor resumes active maintenance
+If the Licensor publishes an Official Release after a continuation fork has been listed under Section 6, the continuation fork may remain listed. Within a reasonable time (recommended: 30 days), it must:
+a) Update its README and Obsidian Directory listing description to prominently state the official plugin is active again and link to the Official Repository.
+b) Continue to comply with Sections 4.3 and 4.4.
+c) Not claim to be the official plugin or official successor unless the Obsidian Directory listing is officially transferred or updated to point to the Official Repository.
 
-4. Distribution and Third-Party Product/Service Restrictions (Not Allowed)
+7.Commercial restrictions
 
-4.1 No third-party Distribution. Except as expressly permitted in Section 5, You may not Distribute the Software or any Derivative Work in Installable Form to any third party.
+7.1 You must not charge any fee for access to, installation of, or use of the Software (or any Fork), and you must not place it behind a paywall, without the Licensor’s prior written permission.
+7.2 You may charge for unrelated products or services (for example consulting, support, training, or hosting), provided access to the Software (or any Fork) remains Free of charge.
+7.3 Voluntary donations are allowed if they do not gate access, features, or updates.
 
-4.2 No third-party products or services. You may not use the Software or any Derivative Work to create, enhance, or provide a product or service that is made available to third parties (whether paid or free) if that product or service includes any part of the Software or is derived from it. This includes, without limitation, shipping it as part of a closed source application, offering it as part of a hosted service, or embedding it in a commercial product for customers.
+8.Contributions
 
-4.3 No listing of forks in the Obsidian Plugin Directory. You may not submit, list, or otherwise make available any Fork or Derivative Work through the Obsidian Plugin Directory.
+If you submit contributions to the Official Repository, you grant the Licensor a perpetual, worldwide, royalty-free, irrevocable license to use, reproduce, modify, distribute, and sublicense those contributions.
 
-5. Explicit Permission for Obsidian and Official Distribution
+9.Third-party components
 
-5.1 Obsidian distribution permitted. Notwithstanding Sections 4.1 and 4.3, Obsidian (and only Obsidian) is permitted to:
-(a) list the unmodified Software in the Obsidian Plugin Directory; and
-(b) Distribute unmodified Official Release Assets to end users for the purpose of installing and updating the plugin.
+Third-party components remain under their own licenses. This License applies only to the Software.
 
-5.2 Unmodified releases by the Licensor. The Licensor may Distribute Official Release Assets without restriction.
+10.Termination
 
-6. Contributions to the Official Repository
+This License terminates automatically if you breach its terms. Upon termination, you must promptly stop the activities permitted under this License to the extent under your control.
 
-6.1 If You submit a contribution (including pull requests, patches, or suggestions) to the Licensor's official repository, You grant the Licensor a perpetual, worldwide, royalty-free, irrevocable license to use, reproduce, modify, distribute, and sublicense that contribution as part of the Software or otherwise.
+11.Disclaimer
 
-7. Third-Party Components
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND.
 
-7.1 The Software may include or depend on third-party components with separate license terms. Those components are licensed to You under their respective licenses. This License Agreement applies only to the Software as defined in Section 1.1.
+12.Limitation of liability
 
-8. Termination
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL THE LICENSOR BE LIABLE FOR ANY CLAIM OR DAMAGES.
 
-8.1 This License Agreement is effective until terminated. It automatically terminates if You breach any term. Upon termination, You must cease use of the Software and delete all copies of the Software and any Derivative Works under Your control, except copies retained solely for legal compliance.
+13.Governing law and venue
 
-9. Disclaimer of Warranty
+This License is governed by the laws of Sweden. Any dispute shall be resolved exclusively by Swedish courts.
 
-THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+14.Severability
 
-10. Limitation of Liability
+If any provision is held invalid or unenforceable, the remaining provisions remain in effect.
 
-TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT WILL THE LICENSOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THIS LICENSE AGREEMENT.
+15.Entire agreement
 
-11. Governing Law and Venue
-
-This License Agreement is governed by the laws of Sweden. Any dispute shall be resolved exclusively by Swedish courts.
-
-12. Commercial Licensing and Exceptions
-
-If You want to Distribute the Software or a Derivative Work in Installable Form, ship it with a product, offer it as part of a service, or list a fork in any plugin directory, contact the Licensor to obtain a separate commercial license or written permission.
+This License is the entire agreement regarding the Software, except separate permissions granted in writing by the Licensor.

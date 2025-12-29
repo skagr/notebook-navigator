@@ -2,9 +2,9 @@
  * Notebook Navigator - Plugin for Obsidian
  * Copyright (c) 2025-2026 Johan Sanneblad
  * All rights reserved.
- * SPDX-License-Identifier: LicenseRef-NotebookNavigator-1.1
+ * SPDX-License-Identifier: LicenseRef-NotebookNavigator-1.2
  *
- * Licensed under the Notebook Navigator License Agreement, Version 1.1.
+ * Licensed under the Notebook Navigator License Agreement, Version 1.2.
  * See the LICENSE file in the repository root.
  */
 // Minimal Obsidian API stubs for Vitest environment.

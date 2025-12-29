@@ -2,9 +2,9 @@
  * Notebook Navigator - Plugin for Obsidian
  * Copyright (c) 2025-2026 Johan Sanneblad
  * All rights reserved.
- * SPDX-License-Identifier: LicenseRef-NotebookNavigator-1.1
+ * SPDX-License-Identifier: LicenseRef-NotebookNavigator-1.2
  *
- * Licensed under the Notebook Navigator License Agreement, Version 1.1.
+ * Licensed under the Notebook Navigator License Agreement, Version 1.2.
  * See the LICENSE file in the repository root.
  */
 
@@ -69,9 +69,12 @@ const RELEASE_NOTES: ReleaseNote[] = [
         date: '2025-12-29',
         showOnUpdate: true,
         new: [],
-        improved: ['Normalized remote image Content-Type headers for better external image support (e.g. `image/jpg`, `image/x-png`).'],
+        improved: [
+            '==Updated license agreement to 1.2==. Free forks are welcome and can be shared via BRAT. If Notebook Navigator has no official release for 12 months, community forks can be listed in Obsidian Community Plugins.'
+        ],
         changed: [],
         fixed: [
+            'Normalized remote image Content-Type headers for better external image support (e.g. `image/jpg`, `image/x-png`).',
             'Fixed **Style settings** not working due to misaligned CSS variable names.',
             '**Navigation Pane > Appearance > Root item spacing** now properly updates the view when changed.'
         ]
