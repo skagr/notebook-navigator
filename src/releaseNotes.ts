@@ -78,11 +78,10 @@ const RELEASE_NOTES: ReleaseNote[] = [
         showOnUpdate: true,
         new: [],
         improved: [
-            'Improved preview text render performance - preview text elements (up to max limit: 25k on mobile, 100k on desktop) are now asyncronously loaded into our LRU cache during startup, not only on demand.',
+            'Improved preview text render performance - preview text elements (up to max limit: 25k on mobile, 100k on desktop) are now asyncronously loaded into our LRU cache during startup, not only on demand.'
         ],
         changed: [],
-        fixed: [
-        ]
+        fixed: []
     },
     {
         version: '2.0.2',
