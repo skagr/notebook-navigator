@@ -306,7 +306,6 @@ export class IndexedDBStorage {
             return;
         }
         if (this.initPromise) {
-            // Don't log during normal operation to reduce noise
             return this.initPromise;
         }
 

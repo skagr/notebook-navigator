@@ -86,9 +86,13 @@ export async function initializeDatabase(
     }
 ): Promise<void> {
     // Idempotent: if already initialized or in progress, skip
-    if (isInitializing) return;
+    if (isInitializing) {
+        return;
+    }
     const existing = dbInstance;
-    if (existing && existing.isInitialized()) return;
+    if (existing && existing.isInitialized()) {
+        return;
+    }
 
     isInitializing = true;
     try {
