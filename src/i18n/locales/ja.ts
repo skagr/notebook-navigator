@@ -1226,7 +1226,7 @@ export const STRINGS_JA = {
                 buttonText: 'キャッシュを再構築',
                 success: 'キャッシュを再構築しました',
                 error: 'キャッシュの再構築に失敗しました',
-                progress: 'キャッシュを再構築中:'
+                progress: 'Notebook Navigator キャッシュ:'
             },
             hotkeys: {
                 intro: 'Notebook Navigator のホットキーは <plugin folder>/notebook-navigator/data.json を編集してカスタマイズします。ファイルをテキストエディタで開き、"keyboardShortcuts" セクションを探してください。各エントリは次の構造です:',

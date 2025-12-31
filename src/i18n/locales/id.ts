@@ -1224,7 +1224,7 @@ export const STRINGS_ID = {
                 buttonText: 'Bangun ulang cache',
                 success: 'Cache dibangun ulang',
                 error: 'Gagal membangun ulang cache',
-                progress: 'Membangun ulang cache:'
+                progress: 'Notebook Navigator cache:'
             },
             hotkeys: {
                 intro: 'Edit <folder plugin>/notebook-navigator/data.json untuk menyesuaikan pintasan keyboard Notebook Navigator. Buka file dan temukan bagian "keyboardShortcuts". Setiap entri menggunakan struktur ini:',

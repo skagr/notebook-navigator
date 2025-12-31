@@ -1223,7 +1223,7 @@ export const STRINGS_VI = {
                 buttonText: 'Xây dựng lại cache',
                 success: 'Đã xây dựng lại cache',
                 error: 'Không thể xây dựng lại cache',
-                progress: 'Đang xây dựng lại cache:'
+                progress: 'Notebook Navigator cache:'
             },
             hotkeys: {
                 intro: 'Sửa <plugin folder>/notebook-navigator/data.json để tùy chỉnh phím tắt Notebook Navigator. Mở tệp và tìm phần "keyboardShortcuts". Mỗi mục dùng cấu trúc này:',

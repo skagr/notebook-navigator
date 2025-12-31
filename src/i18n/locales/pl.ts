@@ -1227,7 +1227,7 @@ export const STRINGS_PL = {
                 buttonText: 'Odbuduj pamięć podręczną',
                 success: 'Pamięć podręczna została odbudowana',
                 error: 'Nie udało się odbudować pamięci podręcznej',
-                progress: 'Odbudowywanie pamięci podręcznej:'
+                progress: 'Notebook Navigator cache:'
             },
             hotkeys: {
                 intro: 'Edytuj <plugin folder>/notebook-navigator/data.json, aby dostosować skróty Notebook Navigator. Otwórz plik i znajdź sekcję "keyboardShortcuts". Każdy wpis ma następującą strukturę:',

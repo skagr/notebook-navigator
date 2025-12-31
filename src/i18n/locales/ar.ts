@@ -1223,7 +1223,7 @@ export const STRINGS_AR = {
                 buttonText: 'إعادة بناء الذاكرة المؤقتة',
                 success: 'تم إعادة بناء الذاكرة المؤقتة',
                 error: 'فشل إعادة بناء الذاكرة المؤقتة',
-                progress: 'إعادة بناء الذاكرة المؤقتة:'
+                progress: 'Notebook Navigator ذاكرة التخزين المؤقت:'
             },
             hotkeys: {
                 intro: 'حرر <plugin folder>/notebook-navigator/data.json لتخصيص اختصارات مفاتيح متصفح الدفتر. افتح الملف وحدد موقع قسم "keyboardShortcuts". يستخدم كل إدخال هذا الهيكل:',

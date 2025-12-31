@@ -1227,7 +1227,7 @@ export const STRINGS_NL = {
                 buttonText: 'Cache opnieuw opbouwen',
                 success: 'Cache opnieuw opgebouwd',
                 error: 'Kan cache niet opnieuw opbouwen',
-                progress: 'Cache opnieuw opbouwen:'
+                progress: 'Notebook Navigator cache:'
             },
             hotkeys: {
                 intro: 'Bewerk <plugin folder>/notebook-navigator/data.json om Notebook Navigator sneltoetsen aan te passen. Open het bestand en zoek de sectie "keyboardShortcuts". Elke invoer gebruikt deze structuur:',

@@ -1224,7 +1224,7 @@ export const STRINGS_IT = {
                 buttonText: 'Ricostruisci cache',
                 success: 'Cache ricostruita',
                 error: 'Impossibile ricostruire cache',
-                progress: 'Ricostruzione cache:'
+                progress: 'Notebook Navigator cache:'
             },
             hotkeys: {
                 intro: 'Modifica <cartella plugin>/notebook-navigator/data.json per personalizzare le scorciatoie da tastiera di Notebook Navigator. Apri il file e trova la sezione "keyboardShortcuts". Ogni voce usa questa struttura:',

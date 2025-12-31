@@ -1222,7 +1222,7 @@ export const STRINGS_ZH_TW = {
                 buttonText: '重建快取',
                 success: '快取已重建',
                 error: '重建快取失敗',
-                progress: '正在重建快取:'
+                progress: 'Notebook Navigator 快取:'
             },
             hotkeys: {
                 intro: '編輯 <plugin folder>/notebook-navigator/data.json 以自訂 Notebook Navigator 快捷鍵。開啟檔案並找到 "keyboardShortcuts" 區段。每個條目使用此結構：',

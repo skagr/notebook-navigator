@@ -1223,7 +1223,7 @@ export const STRINGS_FA = {
                 buttonText: 'بازسازی کش',
                 success: 'کش بازسازی شد',
                 error: 'بازسازی کش ناموفق بود',
-                progress: 'در حال بازسازی کش:'
+                progress: 'Notebook Navigator کش:'
             },
             hotkeys: {
                 intro: 'فایل <پوشه افزونه>/notebook-navigator/data.json را برای سفارشی‌سازی کلیدهای میانبر Notebook Navigator ویرایش کنید. فایل را باز کنید و بخش "keyboardShortcuts" را پیدا کنید. هر ورودی از این ساختار استفاده می‌کند:',

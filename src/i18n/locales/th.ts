@@ -1223,7 +1223,7 @@ export const STRINGS_TH = {
                 buttonText: 'สร้างแคชใหม่',
                 success: 'สร้างแคชใหม่แล้ว',
                 error: 'สร้างแคชใหม่ล้มเหลว',
-                progress: 'กำลังสร้างแคชใหม่:'
+                progress: 'Notebook Navigator แคช:'
             },
             hotkeys: {
                 intro: 'แก้ไข <โฟลเดอร์ปลั๊กอิน>/notebook-navigator/data.json เพื่อปรับแต่งปุ่มลัด Notebook Navigator เปิดไฟล์และค้นหาส่วน "keyboardShortcuts" แต่ละรายการใช้โครงสร้างนี้:',

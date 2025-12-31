@@ -1223,7 +1223,7 @@ export const STRINGS_KO = {
                 buttonText: '캐시 다시 빌드',
                 success: '캐시가 다시 빌드되었습니다',
                 error: '캐시 다시 빌드 실패',
-                progress: '캐시 다시 빌드 중:'
+                progress: 'Notebook Navigator 캐시:'
             },
             hotkeys: {
                 intro: 'Notebook Navigator 단축키는 <plugin folder>/notebook-navigator/data.json을 편집하여 구성합니다. 파일을 텍스트 편집기로 열고 "keyboardShortcuts" 섹션을 확인하세요. 각 항목은 다음 구조를 사용합니다:',

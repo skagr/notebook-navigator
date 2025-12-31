@@ -1227,7 +1227,7 @@ export const STRINGS_DE = {
                 buttonText: 'Cache neu aufbauen',
                 success: 'Cache wurde neu aufgebaut',
                 error: 'Cache-Neuaufbau fehlgeschlagen',
-                progress: 'Cache wird neu aufgebaut:'
+                progress: 'Notebook Navigator Cache:'
             },
             hotkeys: {
                 intro: 'Bearbeite <plugin folder>/notebook-navigator/data.json, um Notebook Navigator-Tastenkürzel anzupassen. Öffne die Datei in einem Texteditor und suche den Abschnitt "keyboardShortcuts". Jede Zuordnung nutzt diese Struktur:',

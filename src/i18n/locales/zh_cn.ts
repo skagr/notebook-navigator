@@ -1224,7 +1224,7 @@ export const STRINGS_ZH_CN = {
                 buttonText: '重建缓存',
                 success: '缓存已重建',
                 error: '重建缓存失败',
-                progress: '正在重建缓存:'
+                progress: 'Notebook Navigator 缓存:'
             },
             hotkeys: {
                 intro: '通过编辑 <plugin folder>/notebook-navigator/data.json 来自定义 Notebook Navigator 快捷键。用文本编辑器打开文件并找到 "keyboardShortcuts" 部分。每个条目都使用以下结构：',

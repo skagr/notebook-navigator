@@ -1225,7 +1225,7 @@ export const STRINGS_UK = {
                 buttonText: 'Перебудувати кеш',
                 success: 'Кеш перебудовано',
                 error: 'Не вдалося перебудувати кеш',
-                progress: 'Перебудова кешу:'
+                progress: 'Notebook Navigator кеш:'
             },
             hotkeys: {
                 intro: 'Редагуйте <plugin folder>/notebook-navigator/data.json для налаштування гарячих клавіш Notebook Navigator. Відкрийте файл і знайдіть розділ "keyboardShortcuts". Кожен запис використовує таку структуру:',

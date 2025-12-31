@@ -1226,7 +1226,7 @@ export const STRINGS_RU = {
                 buttonText: 'Пересобрать кэш',
                 success: 'Кэш пересобран',
                 error: 'Не удалось пересобрать кэш',
-                progress: 'Пересборка кэша:'
+                progress: 'Notebook Navigator кэш:'
             },
             hotkeys: {
                 intro: 'Отредактируйте <папка плагина>/notebook-navigator/data.json для настройки горячих клавиш Notebook Navigator. Откройте файл и найдите раздел "keyboardShortcuts". Каждая запись использует такую структуру:',

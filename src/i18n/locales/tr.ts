@@ -1223,7 +1223,7 @@ export const STRINGS_TR = {
                 buttonText: 'Önbelleği yeniden oluştur',
                 success: 'Önbellek yeniden oluşturuldu',
                 error: 'Önbellek yeniden oluşturulamadı',
-                progress: 'Önbellek yeniden oluşturuluyor:'
+                progress: 'Notebook Navigator önbellek:'
             },
             hotkeys: {
                 intro: 'Notebook Navigator kısayol tuşlarını özelleştirmek için <plugin folder>/notebook-navigator/data.json dosyasını düzenleyin. Dosyayı açın ve "keyboardShortcuts" bölümünü bulun. Her giriş bu yapıyı kullanır:',
