@@ -18,7 +18,6 @@
 
 import { App, TFile } from 'obsidian';
 import { ExtendedApp } from '../types/obsidian-extended';
-import { EXCALIDRAW_BASENAME_SUFFIX, isExcalidrawFile } from './fileNameUtils';
 
 /**
  * File visibility options for the navigator
@@ -174,11 +173,8 @@ export function isMarkdownPath(path: string): boolean {
  */
 export function shouldShowExtensionSuffix(file: TFile): boolean {
     if (!file || !file.extension) return false;
-    if (isExcalidrawFile(file)) {
-        return true;
-    }
-    const ext = file.extension;
-    return !(ext === 'md' || ext === 'canvas' || ext === 'base');
+    const extension = file.extension.toLowerCase();
+    return !(extension === 'md' || extension === 'canvas' || extension === 'base');
 }
 
 /**
@@ -186,8 +182,5 @@ export function shouldShowExtensionSuffix(file: TFile): boolean {
  * Returns an empty string when suffix should not be shown.
  */
 export function getExtensionSuffix(file: TFile): string {
-    if (isExcalidrawFile(file)) {
-        return EXCALIDRAW_BASENAME_SUFFIX;
-    }
     return shouldShowExtensionSuffix(file) ? `.${file.extension}` : '';
 }
