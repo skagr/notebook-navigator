@@ -69,16 +69,13 @@ interface UseNavigationPaneScrollParams {
     isVisible: boolean;
     /** Currently active shortcut id (if any) */
     activeShortcutKey: string | null;
-    /** Measured height of the navigation banner (if configured) */
-    bannerHeight: number;
     /**
      * Top offset inside the scroll container before the virtual list begins.
      *
-     * On mobile, pinned shortcuts can be rendered inside the navigation scroller as a sticky header.
-     * That header contributes to scrollTop, but it is not part of the virtualized item list.
-     * Providing its height here keeps:
-     * - visible range calculations aligned with the list content,
-     * - scrollToIndex alignment below the pinned header.
+     * The navigation pane renders a sticky "chrome" stack (header/toolbar/banner/pinned shortcuts)
+     * above the virtualized tree inside the same scroll container. Providing its height keeps:
+     * - visible range calculations aligned with the tree rows (excluding the chrome),
+     * - scrollToIndex alignment below the chrome stack.
      */
     scrollMargin: number;
 }
@@ -113,7 +110,6 @@ export function useNavigationPaneScroll({
     pathToIndex,
     isVisible,
     activeShortcutKey,
-    bannerHeight,
     scrollMargin
 }: UseNavigationPaneScrollParams): UseNavigationPaneScrollResult {
     const { isMobile } = useServices();
@@ -278,9 +274,6 @@ export function useNavigationPaneScroll({
                     return NAVPANE_MEASUREMENTS.bottomSpacer;
                 case NavigationPaneItemType.LIST_SPACER:
                     return NAVPANE_MEASUREMENTS.listSpacer;
-                case NavigationPaneItemType.BANNER:
-                    // Fall back to a small spacer height until ResizeObserver reports the real banner height
-                    return bannerHeight > 0 ? bannerHeight : NAVPANE_MEASUREMENTS.topSpacer;
                 case NavigationPaneItemType.ROOT_SPACER:
                     return item.spacing;
                 case NavigationPaneItemType.FOLDER:

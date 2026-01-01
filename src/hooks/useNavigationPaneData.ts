@@ -263,7 +263,6 @@ const insertRootSpacing = (items: CombinedNavigationItem[], spacing: number, opt
         if (
             item.type === NavigationPaneItemType.TOP_SPACER ||
             item.type === NavigationPaneItemType.BOTTOM_SPACER ||
-            item.type === NavigationPaneItemType.BANNER ||
             item.type === NavigationPaneItemType.VIRTUAL_FOLDER
         ) {
             return true;
@@ -1108,24 +1107,9 @@ export function useNavigationPaneData({
         const sectionSpacerMap = new Map<NavigationSectionId, string>();
         let firstVisibleSectionId: NavigationSectionId | null = null;
 
-        // Path to the banner file configured in the active vault profile
-        const bannerPath = navigationBannerPath;
-        // Banner appears in main list only when nothing is pinned
-        const pinnedShortcutItems = pinShortcuts && shortcutItems.length > 0;
-        const pinnedRecentItems = shouldPinRecentNotes && recentNotesItems.length > 0;
-        const shouldIncludeBannerInMainList = Boolean(bannerPath && !(pinnedShortcutItems || pinnedRecentItems));
-
-        if (shouldIncludeBannerInMainList && bannerPath) {
-            allItems.push({
-                type: NavigationPaneItemType.TOP_SPACER,
-                key: 'banner-top-spacer'
-            });
-            allItems.push({
-                type: NavigationPaneItemType.BANNER,
-                key: `banner-${bannerPath}`,
-                path: bannerPath
-            });
-        }
+        // Navigation banners are rendered in the pinned chrome stack (above the virtualized list).
+        // Keeping them out of the virtualized items ensures the banner stays in front of the tree rows
+        // and avoids mixing "header chrome" elements into the tree/list semantics.
 
         // Add top spacer for visual separation between pinned content and tree items
         allItems.push({
@@ -1209,7 +1193,6 @@ export function useNavigationPaneData({
         shouldPinRecentNotes,
         settings.showRecentNotes,
         settings.showTags,
-        navigationBannerPath,
         pinShortcuts
     ]);
 

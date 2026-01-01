@@ -274,19 +274,21 @@ export const NavigationPane = React.memo(
         // Detect Android platform for toolbar placement
         const isAndroid = Platform.isAndroidApp;
         const navigationPaneRef = useRef<HTMLDivElement>(null);
+        const navigationOverlayRef = useRef<HTMLDivElement>(null);
         const pinnedShortcutsContainerRef = useRef<HTMLDivElement>(null);
         const [pinnedShortcutsScrollElement, setPinnedShortcutsScrollElement] = useState<HTMLDivElement | null>(null);
         const [pinnedShortcutsHasOverflow, setPinnedShortcutsHasOverflow] = useState(false);
-        // On mobile, pinned shortcuts are rendered inside the navigation scroller (instead of above it).
-        // This means they become part of the scrollable content, but they are not part of the virtualized
-        // list items. During mobile swipe transitions, Obsidian can temporarily report the pane/scroller
-        // as 0x0 while it animates in/out; anchoring pinned content to the same scroll container keeps the
-        // pinned header/resizer stable and avoids a separate layout context.
+        // The navigation pane renders a "chrome" stack above the virtualized tree:
+        // - pane header
+        // - (Android) toolbar
+        // - vault banner
+        // - pinned shortcuts/recent section
         //
-        // We measure the pinned section height and use it as the "scroll margin" for virtualization so:
-        // - Visible range calculations ignore the pinned section offset (scrollTop includes it).
-        // - scrollToIndex aligns items below the pinned section instead of under it.
-        const [pinnedShortcutsScrollMargin, setPinnedShortcutsScrollMargin] = useState<number>(0);
+        // The virtualized list is rendered below this stack inside the same scroll container. We measure
+        // the stack height and feed it into TanStack Virtual as a scrollMargin/scrollPaddingStart so that:
+        // - scrollToIndex aligns items below the chrome (not under it)
+        // - virtual item start offsets match the real DOM layout (list starts after the chrome)
+        const [navigationOverlayHeight, setNavigationOverlayHeight] = useState<number>(0);
         const pinnedShortcutsResizeFrameRef = useRef<number | null>(null);
         const pinnedShortcutsResizeHeightRef = useRef<number>(0);
         const { startPointerDrag } = usePointerDrag();
@@ -547,8 +549,6 @@ export const NavigationPane = React.memo(
         const handleToggleTagsSection = useCallback(() => {
             setTagsSectionExpanded(prev => !prev);
         }, []);
-        // Tracks the measured height of the navigation banner for virtualization
-        const [bannerHeight, setBannerHeight] = useState<number>(0);
         // Trigger for forcing a re-render when shortcut note metadata changes in frontmatter
         const [, forceMetadataRefresh] = useReducer((value: number) => value + 1, 0);
         const [isRootReorderMode, setRootReorderMode] = useState(false);
@@ -903,13 +903,6 @@ export const NavigationPane = React.memo(
             sectionOrder
         });
 
-        // Reset banner height when banner is disabled in settings
-        useEffect(() => {
-            if (!navigationBannerPath) {
-                setBannerHeight(0);
-            }
-        }, [navigationBannerPath]);
-
         // Extract shortcut items to display in pinned area when pinning is enabled
         const pinnedNavigationItems = useMemo(() => {
             const pinnedShortcutItems = shouldPinShortcuts ? shortcutItems : [];
@@ -927,63 +920,46 @@ export const NavigationPane = React.memo(
             });
             return ordered;
         }, [pinnedRecentNotesItems, sectionOrder, shortcutItems, shouldPinRecentNotes, shouldPinShortcuts]);
-        // Banner should be shown in pinned area only when shortcuts are pinned and banner is configured
-        const shouldShowPinnedBanner = Boolean(navigationBannerPath && pinnedNavigationItems.length > 0);
+        const shouldRenderNavigationBanner = Boolean(navigationBannerPath && !isRootReorderMode);
         // Pinned shortcuts are shown in normal navigation mode (but hidden during reorder mode).
         const shouldRenderPinnedShortcuts = pinnedNavigationItems.length > 0 && !isRootReorderMode;
-        // Mobile-only: render pinned shortcuts inside the scroller so they share the same layout/scroll
-        // lifecycle as the virtualized list (single scroll context).
-        const shouldRenderPinnedShortcutsInScroller = isMobile && shouldRenderPinnedShortcuts;
 
         // Recalculates overflow when pinned items or banner visibility changes
         useLayoutEffect(() => {
             updatePinnedShortcutsOverflow(pinnedShortcutsScrollElement);
-        }, [pinnedNavigationItems, pinnedShortcutsScrollElement, shouldShowPinnedBanner, updatePinnedShortcutsOverflow]);
+        }, [pinnedNavigationItems, pinnedShortcutsScrollElement, updatePinnedShortcutsOverflow]);
 
         useLayoutEffect(() => {
-            if (!shouldRenderPinnedShortcutsInScroller) {
-                setPinnedShortcutsScrollMargin(0);
+            const overlayElement = navigationOverlayRef.current;
+            if (!overlayElement) {
+                setNavigationOverlayHeight(0);
                 return;
             }
 
-            const pinnedElement = pinnedShortcutsContainerRef.current;
-            if (!pinnedElement) {
-                setPinnedShortcutsScrollMargin(0);
-                return;
-            }
-
-            // Virtualization reads scrollTop from the scroller, which includes the pinned shortcuts section.
-            // Measuring the pinned section height lets the virtualizer treat the list as if it starts "after"
-            // the pinned section, keeping range calculations and scrollToIndex alignment consistent.
-            const updateScrollMargin = () => {
-                const height = Math.round(pinnedElement.getBoundingClientRect().height);
-                setPinnedShortcutsScrollMargin(prev => (prev === height ? prev : height));
+            const updateOverlayHeight = () => {
+                const height = Math.round(overlayElement.getBoundingClientRect().height);
+                setNavigationOverlayHeight(prev => (prev === height ? prev : height));
             };
 
-            updateScrollMargin();
+            updateOverlayHeight();
 
             if (typeof ResizeObserver === 'undefined') {
-                const handleResize = () => updateScrollMargin();
+                const handleResize = () => updateOverlayHeight();
                 window.addEventListener('resize', handleResize);
                 return () => {
                     window.removeEventListener('resize', handleResize);
                 };
             }
 
-            // Use ResizeObserver so changes from:
-            // - adding/removing pinned items,
-            // - banner visibility,
-            // - user resizing the pinned area,
-            // are reflected immediately in the virtualizer offset.
             const resizeObserver = new ResizeObserver(() => {
-                updateScrollMargin();
+                updateOverlayHeight();
             });
-            resizeObserver.observe(pinnedElement);
+            resizeObserver.observe(overlayElement);
 
             return () => {
                 resizeObserver.disconnect();
             };
-        }, [shouldRenderPinnedShortcutsInScroller]);
+        }, [isAndroid, isMobile, shouldRenderNavigationBanner, shouldRenderPinnedShortcuts]);
 
         // We only reserve gutter space when a banner exists because Windows scrollbars
         // change container width by ~7px when they appear. That width change used to
@@ -1062,8 +1038,7 @@ export const NavigationPane = React.memo(
             pathToIndex,
             isVisible,
             activeShortcutKey,
-            bannerHeight,
-            scrollMargin: shouldRenderPinnedShortcutsInScroller ? pinnedShortcutsScrollMargin : 0
+            scrollMargin: navigationOverlayHeight
         });
 
         /** Converts a potentially transparent background color into a solid color by compositing with the pane surface. */
@@ -1979,20 +1954,6 @@ export const NavigationPane = React.memo(
             setActiveShortcut
         ]);
 
-        // Updates banner height with threshold to prevent micro-adjustments
-        const handleBannerHeightChange = useCallback(
-            (height: number) => {
-                setBannerHeight(previous => {
-                    if (Math.abs(previous - height) < 0.5) {
-                        return previous;
-                    }
-                    return height;
-                });
-                updatePinnedShortcutsOverflow();
-            },
-            [updatePinnedShortcutsOverflow]
-        );
-
         // Renders individual navigation items based on their type
         const renderItem = useCallback(
             (item: CombinedNavigationItem): React.ReactNode => {
@@ -2455,10 +2416,6 @@ export const NavigationPane = React.memo(
                         );
                     }
 
-                    case NavigationPaneItemType.BANNER: {
-                        return <NavigationBanner path={item.path} onHeightChange={handleBannerHeightChange} />;
-                    }
-
                     case NavigationPaneItemType.TOP_SPACER: {
                         const spacerClass = item.hasSeparator ? 'nn-nav-top-spacer nn-nav-spacer--with-separator' : 'nn-nav-top-spacer';
                         return <div className={spacerClass} />;
@@ -2528,7 +2485,6 @@ export const NavigationPane = React.memo(
                 shortcutDragHandleConfig,
                 activeShortcutId,
                 shouldUseShortcutDnd,
-                handleBannerHeightChange,
                 handleShortcutRootDragOver,
                 handleShortcutRootDrop,
                 allowEmptyShortcutDrop,
@@ -2643,55 +2599,6 @@ export const NavigationPane = React.memo(
                 data-shortcut-sorting={isShortcutSorting ? 'true' : undefined}
                 data-shortcuts-resizing={!isMobile && isPinnedShortcutsResizing ? 'true' : undefined}
             >
-                <NavigationPaneHeader
-                    onTreeUpdateComplete={handleTreeUpdateComplete}
-                    onTogglePinnedShortcuts={settings.showShortcuts ? handleShortcutSplitToggle : undefined}
-                    onToggleRootFolderReorder={handleToggleRootReorder}
-                    rootReorderActive={isRootReorderMode}
-                    rootReorderDisabled={!canReorderRootItems}
-                    pinToggleLabel={pinToggleLabel}
-                />
-                {/* Android - toolbar at top */}
-                {isMobile && isAndroid && (
-                    <NavigationToolbar
-                        onTreeUpdateComplete={handleTreeUpdateComplete}
-                        onTogglePinnedShortcuts={settings.showShortcuts ? handleShortcutSplitToggle : undefined}
-                        onToggleRootFolderReorder={handleToggleRootReorder}
-                        rootReorderActive={isRootReorderMode}
-                        rootReorderDisabled={!canReorderRootItems}
-                        pinToggleLabel={pinToggleLabel}
-                    />
-                )}
-                {!isMobile && shouldRenderPinnedShortcuts ? (
-                    <div
-                        className="nn-shortcut-pinned"
-                        ref={pinnedShortcutsContainerRef}
-                        role="presentation"
-                        data-has-banner={shouldShowPinnedBanner ? 'true' : undefined}
-                        data-scroll={pinnedShortcutsHasOverflow ? 'true' : undefined}
-                        style={pinnedShortcutsMaxHeight !== null ? { maxHeight: pinnedShortcutsMaxHeight } : undefined}
-                        onDragOver={allowEmptyShortcutDrop ? handleShortcutRootDragOver : undefined}
-                        onDrop={allowEmptyShortcutDrop ? handleShortcutRootDrop : undefined}
-                    >
-                        <div className="nn-shortcut-pinned-scroll" ref={pinnedShortcutsScrollRefCallback}>
-                            {shouldShowPinnedBanner && navigationBannerPath ? (
-                                <NavigationBanner path={navigationBannerPath} onHeightChange={handleBannerHeightChange} />
-                            ) : null}
-                            <div className="nn-shortcut-pinned-inner">
-                                {pinnedNavigationItems.map(pinnedItem => (
-                                    <React.Fragment key={pinnedItem.key}>{renderItem(pinnedItem)}</React.Fragment>
-                                ))}
-                            </div>
-                        </div>
-                        <div
-                            className="nn-shortcuts-resize-handle"
-                            role="separator"
-                            aria-orientation="horizontal"
-                            aria-label="Resize pinned shortcuts"
-                            onPointerDown={handlePinnedShortcutsResizePointerDown}
-                        />
-                    </div>
-                ) : null}
                 <div
                     ref={scrollContainerRefCallback}
                     className="nn-navigation-pane-scroller"
@@ -2699,112 +2606,117 @@ export const NavigationPane = React.memo(
                     // never changes clientWidth mid-resize (prevents RO feedback loops).
                     data-banner={hasNavigationBannerConfigured ? 'true' : undefined}
                     data-pane="navigation"
-                    role={isRootReorderMode ? 'list' : 'tree'}
                     tabIndex={-1}
                 >
-                    {isMobile && shouldRenderPinnedShortcuts ? (
-                        <div
-                            className="nn-shortcut-pinned"
-                            ref={pinnedShortcutsContainerRef}
-                            role="presentation"
-                            data-has-banner={shouldShowPinnedBanner ? 'true' : undefined}
-                            data-scroll={pinnedShortcutsHasOverflow ? 'true' : undefined}
-                            style={pinnedShortcutsMaxHeight !== null ? { maxHeight: pinnedShortcutsMaxHeight } : undefined}
-                            onDragOver={allowEmptyShortcutDrop ? handleShortcutRootDragOver : undefined}
-                            onDrop={allowEmptyShortcutDrop ? handleShortcutRootDrop : undefined}
-                        >
-                            <div className="nn-shortcut-pinned-scroll" ref={pinnedShortcutsScrollRefCallback}>
-                                {shouldShowPinnedBanner && navigationBannerPath ? (
-                                    <NavigationBanner path={navigationBannerPath} onHeightChange={handleBannerHeightChange} />
-                                ) : null}
-                                <div className="nn-shortcut-pinned-inner">
-                                    {pinnedNavigationItems.map(pinnedItem => (
-                                        <React.Fragment key={pinnedItem.key}>{renderItem(pinnedItem)}</React.Fragment>
-                                    ))}
-                                </div>
-                            </div>
-                            <div
-                                className="nn-shortcuts-resize-handle"
-                                role="separator"
-                                aria-orientation="horizontal"
-                                aria-label="Resize pinned shortcuts"
-                                onPointerDown={handlePinnedShortcutsResizePointerDown}
-                            />
-                        </div>
-                    ) : null}
-                    {isRootReorderMode ? (
-                        <NavigationRootReorderPanel
-                            sectionItems={sectionReorderItems}
-                            folderItems={folderReorderItems}
-                            tagItems={tagReorderItems}
-                            showRootFolderSection={showRootFolderSection}
-                            showRootTagSection={showRootTagSection}
-                            foldersSectionExpanded={foldersSectionExpanded}
-                            tagsSectionExpanded={tagsSectionExpanded}
-                            showRootFolderReset={settings.rootFolderOrder.length > 0}
-                            showRootTagReset={settings.rootTagOrder.length > 0}
-                            resetRootTagOrderLabel={resetRootTagOrderLabel}
-                            onResetRootFolderOrder={handleResetRootFolderOrder}
-                            onResetRootTagOrder={handleResetRootTagOrder}
-                            onReorderSections={reorderSectionOrder}
-                            onReorderFolders={reorderRootFolderOrder}
-                            onReorderTags={reorderRootTagOrder}
-                            canReorderSections={canReorderSections}
-                            canReorderFolders={canReorderRootFolders}
-                            canReorderTags={canReorderRootTags}
-                            isMobile={isMobile}
+                    <div className="nn-navigation-pane-overlay" ref={navigationOverlayRef}>
+                        <NavigationPaneHeader
+                            onTreeUpdateComplete={handleTreeUpdateComplete}
+                            onTogglePinnedShortcuts={settings.showShortcuts ? handleShortcutSplitToggle : undefined}
+                            onToggleRootFolderReorder={handleToggleRootReorder}
+                            rootReorderActive={isRootReorderMode}
+                            rootReorderDisabled={!canReorderRootItems}
+                            pinToggleLabel={pinToggleLabel}
                         />
-                    ) : (
-                        items.length > 0 && (
+                        {/* Android - toolbar at top */}
+                        {isMobile && isAndroid && (
+                            <NavigationToolbar
+                                onTreeUpdateComplete={handleTreeUpdateComplete}
+                                onTogglePinnedShortcuts={settings.showShortcuts ? handleShortcutSplitToggle : undefined}
+                                onToggleRootFolderReorder={handleToggleRootReorder}
+                                rootReorderActive={isRootReorderMode}
+                                rootReorderDisabled={!canReorderRootItems}
+                                pinToggleLabel={pinToggleLabel}
+                            />
+                        )}
+                        {shouldRenderNavigationBanner && navigationBannerPath ? <NavigationBanner path={navigationBannerPath} /> : null}
+                        {shouldRenderPinnedShortcuts ? (
                             <div
-                                className="nn-virtual-container"
-                                style={{
-                                    height: `${rowVirtualizer.getTotalSize()}px`
-                                }}
+                                className="nn-shortcut-pinned"
+                                ref={pinnedShortcutsContainerRef}
+                                role="presentation"
+                                data-scroll={pinnedShortcutsHasOverflow ? 'true' : undefined}
+                                style={pinnedShortcutsMaxHeight !== null ? { maxHeight: pinnedShortcutsMaxHeight } : undefined}
+                                onDragOver={allowEmptyShortcutDrop ? handleShortcutRootDragOver : undefined}
+                                onDrop={allowEmptyShortcutDrop ? handleShortcutRootDrop : undefined}
                             >
-                                {rowVirtualizer.getVirtualItems().map(virtualItem => {
-                                    // Safe array access
-                                    const item =
-                                        virtualItem.index >= 0 && virtualItem.index < items.length ? items[virtualItem.index] : null;
-                                    if (!item) return null;
-
-                                    // Callback to measure dynamic-height items for virtualization
-                                    const measureRef = (element: HTMLDivElement | null) => {
-                                        if (!element) {
-                                            return;
-                                        }
-                                        if (item.type === NavigationPaneItemType.BANNER) {
-                                            rowVirtualizer.measureElement(element);
-                                        }
-                                    };
-
-                                    return (
-                                        <div
-                                            key={virtualItem.key}
-                                            data-index={virtualItem.index}
-                                            className="nn-virtual-nav-item"
-                                            ref={measureRef}
-                                            style={{
-                                                // When pinned shortcuts are inside the scroller, TanStack Virtual is configured
-                                                // with a scrollMargin equal to the pinned section height. That keeps scrollTop
-                                                // and scrollToIndex semantics relative to the start of the list, but it also
-                                                // means virtualItem.start includes that margin. The virtual container itself
-                                                // is rendered below the pinned section in normal flow, so we subtract the
-                                                // pinned height to position items at the correct Y within the container.
-                                                transform: `translateY(${
-                                                    shouldRenderPinnedShortcutsInScroller
-                                                        ? Math.max(0, virtualItem.start - pinnedShortcutsScrollMargin)
-                                                        : virtualItem.start
-                                                }px)`
-                                            }}
-                                        >
-                                            {renderItem(item)}
-                                        </div>
-                                    );
-                                })}
+                                <div className="nn-shortcut-pinned-scroll" ref={pinnedShortcutsScrollRefCallback}>
+                                    <div className="nn-shortcut-pinned-inner">
+                                        {pinnedNavigationItems.map(pinnedItem => (
+                                            <React.Fragment key={pinnedItem.key}>{renderItem(pinnedItem)}</React.Fragment>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div
+                                    className="nn-shortcuts-resize-handle"
+                                    role="separator"
+                                    aria-orientation="horizontal"
+                                    aria-label="Resize pinned shortcuts"
+                                    onPointerDown={handlePinnedShortcutsResizePointerDown}
+                                />
                             </div>
-                        )
-                    )}
+                        ) : null}
+                    </div>
+                    <div role={isRootReorderMode ? 'list' : 'tree'}>
+                        {isRootReorderMode ? (
+                            <NavigationRootReorderPanel
+                                sectionItems={sectionReorderItems}
+                                folderItems={folderReorderItems}
+                                tagItems={tagReorderItems}
+                                showRootFolderSection={showRootFolderSection}
+                                showRootTagSection={showRootTagSection}
+                                foldersSectionExpanded={foldersSectionExpanded}
+                                tagsSectionExpanded={tagsSectionExpanded}
+                                showRootFolderReset={settings.rootFolderOrder.length > 0}
+                                showRootTagReset={settings.rootTagOrder.length > 0}
+                                resetRootTagOrderLabel={resetRootTagOrderLabel}
+                                onResetRootFolderOrder={handleResetRootFolderOrder}
+                                onResetRootTagOrder={handleResetRootTagOrder}
+                                onReorderSections={reorderSectionOrder}
+                                onReorderFolders={reorderRootFolderOrder}
+                                onReorderTags={reorderRootTagOrder}
+                                canReorderSections={canReorderSections}
+                                canReorderFolders={canReorderRootFolders}
+                                canReorderTags={canReorderRootTags}
+                                isMobile={isMobile}
+                            />
+                        ) : (
+                            items.length > 0 && (
+                                <div
+                                    className="nn-virtual-container"
+                                    style={{
+                                        height: `${rowVirtualizer.getTotalSize()}px`
+                                    }}
+                                >
+                                    {rowVirtualizer.getVirtualItems().map(virtualItem => {
+                                        // Safe array access
+                                        const item =
+                                            virtualItem.index >= 0 && virtualItem.index < items.length ? items[virtualItem.index] : null;
+                                        if (!item) return null;
+
+                                        return (
+                                            <div
+                                                key={virtualItem.key}
+                                                data-index={virtualItem.index}
+                                                className="nn-virtual-nav-item"
+                                                style={{
+                                                    // The navigation chrome stack (header/banner/pinned) lives above the virtual list
+                                                    // inside the same scroll container. TanStack Virtual is configured with a
+                                                    // scrollMargin/scrollPaddingStart equal to the chrome height so scrollToIndex aligns
+                                                    // items below the chrome, but it also
+                                                    // means virtualItem.start includes that margin. The virtual container itself
+                                                    // is rendered below the chrome stack in normal flow, so we subtract the
+                                                    // overlay height to position items at the correct Y within the container.
+                                                    transform: `translateY(${Math.max(0, virtualItem.start - navigationOverlayHeight)}px)`
+                                                }}
+                                            >
+                                                {renderItem(item)}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )
+                        )}
+                    </div>
                 </div>
                 {/* iOS - toolbar at bottom */}
                 {isMobile && !isAndroid && (
