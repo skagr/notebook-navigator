@@ -63,6 +63,7 @@ import { SortOption } from '../settings';
 import { ItemType } from '../types';
 import { DateUtils } from '../utils/dateUtils';
 import { runAsyncAction } from '../utils/async';
+import { getTooltipPlacement } from '../utils/domUtils';
 import { openFileInContext } from '../utils/openFileInContext';
 import { FILE_VISIBILITY, getExtensionSuffix, isImageFile, shouldDisplayFile } from '../utils/fileTypeUtils';
 import { resolveFileDragIconId, resolveFileIconId } from '../utils/fileIconUtils';
@@ -1025,12 +1026,8 @@ export const FileItem = React.memo(function FileItem({
         tooltipLines.push('', datesTooltip);
         const tooltip = tooltipLines.join('\n');
 
-        // Check if RTL mode is active
-        const isRTL = document.body.classList.contains('mod-rtl');
-
-        // Set placement to the right (left in RTL)
         setTooltip(fileRef.current, tooltip, {
-            placement: isRTL ? 'left' : 'right'
+            placement: getTooltipPlacement()
         });
     }, [
         isMobile,
