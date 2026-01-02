@@ -948,6 +948,14 @@ export const STRINGS_DE = {
                     duplicateName: 'Profilname bereits vorhanden'
                 }
             },
+            vaultTitle: {
+                name: 'Tresortitel-Platzierung (nur Desktop)',
+                desc: 'Wählen Sie, wo der Tresortitel angezeigt wird.',
+                options: {
+                    header: 'Im Header anzeigen',
+                    navigation: 'Im Navigationsbereich anzeigen'
+                }
+            },
             excludedFolders: {
                 name: 'Ordner verstecken (Tresorprofil)',
                 desc: 'Kommagetrennte Liste von auszublendenden Ordnern. Namensmuster: assets* (Ordner die mit assets beginnen), *_temp (endet mit _temp). Pfadmuster: /archive (nur Wurzel-Archive), /res* (Wurzelordner die mit res beginnen), /*/temp (temp-Ordner eine Ebene tief), /projects/* (alle Ordner in projects).',

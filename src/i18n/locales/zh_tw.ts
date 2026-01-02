@@ -964,6 +964,14 @@ export const STRINGS_ZH_TW = {
                     duplicateName: '設定檔名稱已存在'
                 }
             },
+            vaultTitle: {
+                name: '儲存庫標題位置（僅桌面版）',
+                desc: '選擇儲存庫標題顯示的位置。',
+                options: {
+                    header: '顯示在標題列',
+                    navigation: '顯示在導覽窗格'
+                }
+            },
             excludedFolders: {
                 name: '隱藏資料夾 (儲存庫配置)',
                 desc: '以逗號分隔的要隱藏的資料夾清單。名稱模式：assets* (以 assets 開頭的資料夾)、*_temp (以 _temp 結尾)。路徑模式：/archive (僅根目錄的 archive)、/res* (以 res 開頭的根資料夾)、/*/temp (一層深的 temp 資料夾)、/projects/* (projects 內的所有資料夾)。',

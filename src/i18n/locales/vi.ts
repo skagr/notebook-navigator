@@ -965,6 +965,14 @@ export const STRINGS_VI = {
                     duplicateName: 'Tên hồ sơ đã tồn tại'
                 }
             },
+            vaultTitle: {
+                name: 'Vị trí tiêu đề vault (chỉ máy tính)',
+                desc: 'Chọn nơi tiêu đề vault được hiển thị.',
+                options: {
+                    header: 'Hiển thị ở tiêu đề',
+                    navigation: 'Hiển thị trong bảng điều hướng'
+                }
+            },
             excludedFolders: {
                 name: 'Ẩn thư mục (hồ sơ vault)',
                 desc: 'Danh sách thư mục cần ẩn phân cách bằng dấu phẩy. Mẫu tên: assets* (thư mục bắt đầu bằng assets), *_temp (kết thúc bằng _temp). Mẫu đường dẫn: /archive (chỉ archive gốc), /res* (thư mục gốc bắt đầu bằng res), /*/temp (thư mục temp ở độ sâu một cấp), /projects/* (tất cả thư mục trong projects).',

@@ -111,7 +111,7 @@ body {
     --nn-nav-icon-size: 16px; /* Fixed icon size */
 
     /* List title area */
-    --nn-list-title-padding-block: 12px; /* Vertical padding around list title */
+    --nn-list-title-padding-block: 8px; /* Vertical padding around list title */
     --nn-list-title-font-size: 16px; /* Desktop list title text size */
     --nn-file-tag-row-height-base: 22px;
     --nn-file-tag-row-gap-base: 4px;

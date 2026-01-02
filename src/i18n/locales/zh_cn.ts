@@ -944,6 +944,14 @@ export const STRINGS_ZH_CN = {
                     duplicateName: '配置文件名称已存在'
                 }
             },
+            vaultTitle: {
+                name: '库标题位置（仅桌面端）',
+                desc: '选择库标题显示的位置。',
+                options: {
+                    header: '显示在标题栏',
+                    navigation: '显示在导航窗格'
+                }
+            },
             excludedFolders: {
                 name: '隐藏文件夹 (库配置)',
                 desc: '逗号分隔的要隐藏的文件夹列表。名称模式：assets*（以assets开头的文件夹），*_temp（以_temp结尾）。路径模式：/archive（仅根目录archive），/res*（以res开头的根文件夹），/*/temp（一级目录下的temp文件夹），/projects/*（projects内的所有文件夹）。',

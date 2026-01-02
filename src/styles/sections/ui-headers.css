@@ -51,10 +51,15 @@
 }
 
 .nn-pane-header-profile {
-    cursor: pointer;
     gap: 4px;
     padding-right: 0;
     justify-content: flex-start;
+    display: inline-flex;
+    align-items: center;
+}
+
+.nn-pane-header-profile[role='button'] {
+    cursor: pointer;
 }
 
 .nn-pane-header-profile:focus-visible {

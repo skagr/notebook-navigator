@@ -965,6 +965,14 @@ export const STRINGS_KO = {
                     duplicateName: '프로필 이름이 이미 존재합니다'
                 }
             },
+            vaultTitle: {
+                name: '볼트 제목 위치 (데스크톱 전용)',
+                desc: '볼트 제목이 표시되는 위치를 선택합니다.',
+                options: {
+                    header: '헤더에 표시',
+                    navigation: '탐색 창에 표시'
+                }
+            },
             excludedFolders: {
                 name: '폴더 숨기기 (볼트 프로필)',
                 desc: '숨길 폴더의 쉼표로 구분된 목록입니다. 이름 패턴: assets* (assets로 시작하는 폴더), *_temp (_temp로 끝나는). 경로 패턴: /archive (루트 archive만), /res* (res로 시작하는 루트 폴더), /*/temp (한 레벨 깊이의 temp 폴더), /projects/* (projects 내부의 모든 폴더).',

@@ -968,6 +968,14 @@ export const STRINGS_PL = {
                     duplicateName: 'Nazwa profilu już istnieje'
                 }
             },
+            vaultTitle: {
+                name: 'Położenie tytułu sejfu (tylko pulpit)',
+                desc: 'Wybierz, gdzie tytuł sejfu jest wyświetlany.',
+                options: {
+                    header: 'Pokaż w nagłówku',
+                    navigation: 'Pokaż w panelu nawigacji'
+                }
+            },
             excludedFolders: {
                 name: 'Ukryj foldery (profil sejfu)',
                 desc: 'Lista folderów do ukrycia oddzielonych przecinkami. Wzory nazw: assets* (foldery zaczynające się od assets), *_temp (kończące się na _temp). Wzory ścieżek: /archive (tylko archiwum główne), /res* (foldery główne zaczynające się od res), /*/temp (foldery temp jeden poziom w głąb), /projects/* (wszystkie foldery wewnątrz projects).',

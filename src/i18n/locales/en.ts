@@ -964,6 +964,14 @@ export const STRINGS_EN = {
                     duplicateName: 'Profile name already exists'
                 }
             },
+            vaultTitle: {
+                name: 'Vault title placement (desktop only)',
+                desc: 'Choose where the vault title is shown.',
+                options: {
+                    header: 'Show in header',
+                    navigation: 'Show in navigation pane'
+                }
+            },
             excludedFolders: {
                 name: 'Hide folders (vault profile)',
                 desc: 'Comma-separated list of folders to hide. Name patterns: assets* (folders starting with assets), *_temp (ending with _temp). Path patterns: /archive (root archive only), /res* (root folders starting with res), /*/temp (temp folders one level deep), /projects/* (all folders inside projects).',

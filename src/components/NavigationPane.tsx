@@ -96,6 +96,7 @@ import { FolderItem } from './FolderItem';
 import { NavigationPaneHeader } from './NavigationPaneHeader';
 import { NavigationToolbar } from './NavigationToolbar';
 import { TagTreeItem } from './TagTreeItem';
+import { VaultTitleArea } from './VaultTitleArea';
 import { VirtualFolderComponent } from './VirtualFolderItem';
 import { getNavigationIndex, normalizeNavigationPath } from '../utils/navigationIndex';
 import {
@@ -273,6 +274,10 @@ export const NavigationPane = React.memo(
         const { fileData, getFileDisplayName } = useFileCache();
         // Detect Android platform for toolbar placement
         const isAndroid = Platform.isAndroidApp;
+        const vaultTitlePreference = settings.vaultTitle ?? 'navigation';
+        const hasMultipleVaultProfiles = (settings.vaultProfiles ?? []).length > 1;
+        const shouldShowVaultTitleInHeader = !isMobile && hasMultipleVaultProfiles && vaultTitlePreference === 'header';
+        const shouldShowVaultTitleInNavigationPane = !isMobile && hasMultipleVaultProfiles && vaultTitlePreference === 'navigation';
         const navigationPaneRef = useRef<HTMLDivElement>(null);
         const navigationOverlayRef = useRef<HTMLDivElement>(null);
         const pinnedShortcutsContainerRef = useRef<HTMLDivElement>(null);
@@ -2635,7 +2640,9 @@ export const NavigationPane = React.memo(
                             rootReorderActive={isRootReorderMode}
                             rootReorderDisabled={!canReorderRootItems}
                             pinToggleLabel={pinToggleLabel}
+                            showVaultTitleInHeader={shouldShowVaultTitleInHeader}
                         />
+                        {shouldShowVaultTitleInNavigationPane ? <VaultTitleArea /> : null}
                         {/* Android - toolbar at top */}
                         {isMobile && isAndroid && (
                             <NavigationToolbar

@@ -966,6 +966,14 @@ export const STRINGS_IT = {
                     duplicateName: 'Nome profilo già esistente'
                 }
             },
+            vaultTitle: {
+                name: 'Posizione titolo vault (solo desktop)',
+                desc: 'Scegli dove viene mostrato il titolo del vault.',
+                options: {
+                    header: "Mostra nell'intestazione",
+                    navigation: 'Mostra nel pannello di navigazione'
+                }
+            },
             excludedFolders: {
                 name: 'Nascondi cartelle (profilo vault)',
                 desc: 'Lista di cartelle da nascondere separate da virgola. Pattern nome: assets* (cartelle che iniziano con assets), *_temp (che finiscono con _temp). Pattern percorso: /archivio (solo archivio root), /res* (cartelle root che iniziano con res), /*/temp (cartelle temp un livello sotto), /progetti/* (tutte le cartelle in progetti).',

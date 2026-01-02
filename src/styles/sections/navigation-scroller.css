@@ -171,8 +171,55 @@
 /* Child chrome elements stay transparent so the overlay stack paints the background once. */
 .nn-navigation-pane .nn-navigation-pane-scroller > .nn-navigation-pane-overlay .nn-pane-header,
 .nn-navigation-pane .nn-navigation-pane-scroller > .nn-navigation-pane-overlay .nn-mobile-toolbar,
-.nn-navigation-pane .nn-navigation-pane-scroller > .nn-navigation-pane-overlay .nn-shortcut-pinned {
+.nn-navigation-pane .nn-navigation-pane-scroller > .nn-navigation-pane-overlay .nn-shortcut-pinned,
+.nn-navigation-pane .nn-navigation-pane-scroller > .nn-navigation-pane-overlay .nn-vault-title-area {
     background-color: transparent;
+}
+
+/* Vault title displayed below the navigation header (desktop only). */
+.nn-vault-title-area {
+    background-color: var(--nn-theme-nav-bg);
+    padding: var(--nn-list-title-padding-block) var(--nn-scroller-padding) 8px;
+}
+
+.nn-vault-title-content {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 var(--nn-nav-item-padding-horizontal);
+    font-size: var(--nn-list-title-font-size);
+    font-weight: var(--nn-theme-list-heading-font-weight);
+    color: var(--nn-theme-list-heading-color);
+    gap: 4px;
+    max-width: 100%;
+}
+
+.nn-vault-title-trigger {
+    cursor: pointer;
+}
+
+.nn-vault-title-trigger:focus-visible {
+    outline: 1px solid var(--interactive-accent);
+    outline-offset: 1px;
+    border-radius: 6px;
+}
+
+.nn-vault-title-text {
+    line-height: 1.2;
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.nn-vault-title-chevron {
+    width: var(--nn-nav-icon-size);
+    height: var(--nn-nav-icon-size);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--nn-theme-list-heading-color);
 }
 
 /* Mobile-only: hide the pinned shortcuts shadow overlay. */

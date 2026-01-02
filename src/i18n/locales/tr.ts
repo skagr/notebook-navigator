@@ -965,6 +965,14 @@ export const STRINGS_TR = {
                     duplicateName: 'Profil adı zaten var'
                 }
             },
+            vaultTitle: {
+                name: 'Kasa başlığı konumu (yalnızca masaüstü)',
+                desc: 'Kasa başlığının gösterileceği yeri seçin.',
+                options: {
+                    header: 'Başlıkta göster',
+                    navigation: 'Gezinme panelinde göster'
+                }
+            },
             excludedFolders: {
                 name: 'Klasörleri gizle (kasa profili)',
                 desc: 'Virgülle ayrılmış gizlenecek klasörler listesi. Ad desenleri: assets* (assets ile başlayan klasörler), *_temp (_temp ile biten). Yol desenleri: /archive (yalnızca kök arşiv), /res* (res ile başlayan kök klasörler), /*/temp (bir seviye derinlikte temp klasörleri), /projects/* (projects içindeki tüm klasörler).',

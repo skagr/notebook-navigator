@@ -946,6 +946,14 @@ export const STRINGS_JA = {
                     duplicateName: 'プロファイル名は既に存在します'
                 }
             },
+            vaultTitle: {
+                name: 'ボルトタイトルの配置（デスクトップのみ）',
+                desc: 'ボルトタイトルの表示場所を選択します。',
+                options: {
+                    header: 'ヘッダーに表示',
+                    navigation: 'ナビゲーションペインに表示'
+                }
+            },
             excludedFolders: {
                 name: 'フォルダを非表示 (ボルトプロファイル)',
                 desc: '非表示にするフォルダのカンマ区切りリスト。名前パターン: assets*（assetsで始まるフォルダ）、*_temp（_tempで終わる）。パスパターン: /archive（ルートのアーカイブのみ）、/res*（resで始まるルートフォルダ）、/*/temp（1階層下のtempフォルダ）、/projects/*（projects内のすべてのフォルダ）。',

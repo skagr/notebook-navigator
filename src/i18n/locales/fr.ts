@@ -947,6 +947,14 @@ export const STRINGS_FR = {
                     duplicateName: 'Le nom du profil existe déjà'
                 }
             },
+            vaultTitle: {
+                name: 'Placement du titre du coffre (bureau uniquement)',
+                desc: 'Choisissez où le titre du coffre est affiché.',
+                options: {
+                    header: "Afficher dans l'en-tête",
+                    navigation: 'Afficher dans le panneau de navigation'
+                }
+            },
             excludedFolders: {
                 name: 'Masquer les dossiers (profil du coffre)',
                 desc: 'Liste de dossiers à masquer séparés par des virgules. Modèles de nom : assets* (dossiers commençant par assets), *_temp (finissant par _temp). Modèles de chemin : /archive (archive racine uniquement), /res* (dossiers racine commençant par res), /*/temp (dossiers temp un niveau plus bas), /projects/* (tous les dossiers dans projects).',

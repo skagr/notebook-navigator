@@ -968,6 +968,14 @@ export const STRINGS_NL = {
                     duplicateName: 'Profielnaam bestaat al'
                 }
             },
+            vaultTitle: {
+                name: 'Kluistitel plaatsing (alleen desktop)',
+                desc: 'Kies waar de kluistitel wordt weergegeven.',
+                options: {
+                    header: 'Weergeven in header',
+                    navigation: 'Weergeven in navigatiepaneel'
+                }
+            },
             excludedFolders: {
                 name: 'Mappen verbergen (kluisprofiel)',
                 desc: 'Kommagescheiden lijst van te verbergen mappen. Naampatronen: assets* (mappen beginnend met assets), *_temp (eindigend met _temp). Padpatronen: /archive (alleen root archive), /res* (root mappen beginnend met res), /*/temp (temp mappen één niveau diep), /projects/* (alle mappen binnen projects).',

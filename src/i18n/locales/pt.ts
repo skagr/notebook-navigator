@@ -966,6 +966,14 @@ export const STRINGS_PT = {
                     duplicateName: 'Nome de perfil já existe'
                 }
             },
+            vaultTitle: {
+                name: 'Posição do título do cofre (apenas desktop)',
+                desc: 'Escolha onde o título do cofre é mostrado.',
+                options: {
+                    header: 'Mostrar no cabeçalho',
+                    navigation: 'Mostrar no painel de navegação'
+                }
+            },
             excludedFolders: {
                 name: 'Ocultar pastas (perfil do cofre)',
                 desc: 'Lista de pastas a ocultar separadas por vírgulas. Padrões de nome: assets* (pastas começando com assets), *_temp (terminando com _temp). Padrões de caminho: /arquivo (apenas arquivo raiz), /res* (pastas raiz começando com res), /*/temp (pastas temp um nível abaixo), /projetos/* (todas as pastas dentro de projetos).',

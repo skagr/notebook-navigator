@@ -966,6 +966,14 @@ export const STRINGS_ID = {
                     duplicateName: 'Nama profil sudah ada'
                 }
             },
+            vaultTitle: {
+                name: 'Penempatan judul vault (khusus desktop)',
+                desc: 'Pilih di mana judul vault ditampilkan.',
+                options: {
+                    header: 'Tampilkan di header',
+                    navigation: 'Tampilkan di panel navigasi'
+                }
+            },
             excludedFolders: {
                 name: 'Sembunyikan folder (profil vault)',
                 desc: 'Daftar folder yang dipisahkan koma untuk disembunyikan. Pola nama: assets* (folder yang dimulai dengan assets), *_temp (diakhiri dengan _temp). Pola path: /arsip (arsip root saja), /res* (folder root yang dimulai dengan res), /*/temp (folder temp satu level ke dalam), /proyek/* (semua folder di dalam proyek).',

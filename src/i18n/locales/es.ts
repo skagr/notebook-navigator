@@ -946,6 +946,14 @@ export const STRINGS_ES = {
                     duplicateName: 'El nombre del perfil ya existe'
                 }
             },
+            vaultTitle: {
+                name: 'Ubicación del título de bóveda (solo escritorio)',
+                desc: 'Elige dónde se muestra el título de la bóveda.',
+                options: {
+                    header: 'Mostrar en el encabezado',
+                    navigation: 'Mostrar en el panel de navegación'
+                }
+            },
             excludedFolders: {
                 name: 'Ocultar carpetas (perfil de bóveda)',
                 desc: 'Lista de carpetas a ocultar separadas por comas. Patrones de nombre: assets* (carpetas que comienzan con assets), *_temp (terminan con _temp). Patrones de ruta: /archive (solo archivo raíz), /res* (carpetas raíz que comienzan con res), /*/temp (carpetas temp un nivel abajo), /projects/* (todas las carpetas dentro de projects).',
