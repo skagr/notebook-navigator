@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { App, Modal } from 'obsidian';
+import { Modal } from 'obsidian';
 import { getWelcomeVideoUrl, WELCOME_VIDEO_THUMBNAIL_URL } from '../constants/urls';
 import { strings } from '../i18n';
 import { addAsyncEventListener } from '../utils/domEventListeners';
@@ -24,10 +24,6 @@ import { addAsyncEventListener } from '../utils/domEventListeners';
 export class WelcomeModal extends Modal {
     private domDisposers: (() => void)[] = [];
     private openVideoButton: HTMLButtonElement | null = null;
-
-    constructor(app: App) {
-        super(app);
-    }
 
     onOpen(): void {
         const pluginName = strings.plugin.viewName;
@@ -41,19 +37,12 @@ export class WelcomeModal extends Modal {
 
         const body = this.contentEl.createDiv({ cls: 'nn-welcome-body' });
 
-        body.createEl('p', {
-            text: strings.modals.welcome.introText,
-            cls: 'nn-welcome-text'
-        });
-
-        body.createEl('p', {
-            text: strings.modals.welcome.continueText,
-            cls: 'nn-welcome-text'
-        });
-
-        body.createEl('p', {
-            text: strings.modals.welcome.thanksText,
-            cls: 'nn-welcome-text'
+        const paragraphs = [strings.modals.welcome.introText, strings.modals.welcome.continueText, strings.modals.welcome.thanksText];
+        paragraphs.forEach(text => {
+            body.createEl('p', {
+                text,
+                cls: 'nn-welcome-text'
+            });
         });
 
         const thumbnailLink = body.createEl('a', {
